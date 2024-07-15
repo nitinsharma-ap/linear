@@ -1,12 +1,12 @@
 .Main {
   width:18%;
   /* height:95vh; */
-  /* height: 100%; */
-
-
+  height:93vh;
+  box-shadow: 10px 0 15px -3px rgba(163, 165, 170, 0.1), 6px 0 6px -2px rgba(163, 165, 170, 0.1);
+ /* border-right: 1px solid #cccccc52; */
   padding-left: 10px;
   padding-right: 10px;
-  box-shadow: 0 20px 25px -5px rgba(54, 78, 126, 0.2), 0 10px 10px -5px rgba(54, 78, 126, 0.1);
+  /* box-shadow: 0 20px 25px -5px rgba(54, 78, 126, 0.2), 0 10px 10px -5px rgba(54, 78, 126, 0.1); */
 }
 .list {
   display: flex;
@@ -35,12 +35,18 @@
   margin-bottom: 20px;
   color: var(--text-color);
 }
+.userSection {
+  :where(.css-dev-only-do-not-override-1fumvat).ant-menu-light.ant-menu-root.ant-menu-inline{
+    border-inline-end: none !important;
+  }
+}
 .userPhoto{
   margin-top: 1rem;
   width: auto;
+  padding-left: 1.5rem;
   display: flex;
   align-items: center;
-  justify-content:center;
+  justify-content:flex-start;
   box-shadow: 0 10px 15px -3px rgba(163, 165, 170, 0.1), 0 4px 6px -2px rgba(54, 78, 126, 0.1);
   gap: 8px;
   margin-bottom: 1rem;
@@ -62,28 +68,38 @@
   display: flex;
   width: auto;
   height: 10vh;
-  justify-content:center;
+  justify-content:space-between;
   align-items: center;
   margin-bottom: 1rem;
+  margin-left: 1.5rem;
   gap: 1rem;
-  box-shadow: 0 20px 25px -5px rgba(54, 78, 126, 0.2), 0 10px 10px -5px rgba(54, 78, 126, 0.1);
+
+  /* box-shadow: 0 20px 25px -5px rgba(54, 78, 126, 0.2), 0 10px 10px -5px rgba(54, 78, 126, 0.1); */
 }
 .Dark{
   display: flex !important;
   justify-content:center;
-  align-items:center;
+
+
   width: auto;
+  vertical-align:bottom;
   gap: 5px;
 }
 .d1{
   font-size:2rem;
 }
 .Dark p{
-  font-size:1rem ;
-  font-weight: bold;
+  font-family: var(--font-regular);
+  font-size: 14px;
 }
-.switch {
-  align-self:flex-end;
+.switch-theam {
+  .ant-menu-title-content{
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+
 }
 
 .ant-menu {
@@ -195,7 +211,7 @@
   align-items: center;
   margin-bottom: 0rem !important;
   gap: 0.5rem !important;
-  box-shadow: 0 20px 25px -5px rgba(54, 78, 126, 0.2), 0 10px 10px -5px rgba(54, 78, 126, 0.1);
+
 }
 .userIcon {
   font-size:3rem;

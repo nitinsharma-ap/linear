@@ -172,7 +172,7 @@ const Login = () => {
     let isValid = true;
 
     if (userId === '') {
-      setUserIdError("Enter the UserId");
+      setUserIdError("Enter email id");
       isValid = false;
     } else {
       setUserIdError("");
@@ -234,34 +234,33 @@ const Login = () => {
           <h1>Login</h1>
           <Form onSubmitCapture={handleSubmit}>
             <div className="user">
-              <label className="label">User Id</label>
+              <label className="label">Email Id</label>
               <Input
                 type="text"
                 className="input"
-                placeholder="Enter User ID"
+                placeholder="Enter email"
                 value={userId}
                 onChange={(e) => setUserId(e.target.value)}
               />
-              {UserIdError && <p className="error">{UserIdError}</p>}
-              <br />
+              {<span className="error">{UserIdError && UserIdError}</span>}
+              {/* <br /> */}
               <label className="label">Password</label>
               <Input
                 type="password"
                 className="input"
-                placeholder="Enter your password"
+                placeholder="Enter password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              {passwordError && <p className="error">{passwordError}</p>}
-              <br />
-              <br />
+              {<span className="error">{passwordError && passwordError}</span>}
+
             </div>
             <div className="button-login">
             <Button type="primary" htmlType="submit">
-              Submit
+              Login
             </Button>
             <Button onClick={handleRegister} className="Register">
-              Register
+              SignUp
             </Button>
             </div>
 

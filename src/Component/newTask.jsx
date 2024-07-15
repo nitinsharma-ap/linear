@@ -43,12 +43,14 @@ function NewTask({ isModalOpen, handleOk, handleCancel, users }) {
     };
 
     handleOk(task);
+  message.success("You have succuss full add task.")
+
 
     // Reset form fields after submission
     setTaskTitle('');
     setDescription('');
-    setAssignDate(null);
-    setDueDate(null);
+    setAssignDate('');
+    setDueDate('');
     setStatus('Status');
     setPriority('Priority');
     setAssignedUser('Assign User'); // Reset to default value
@@ -56,7 +58,7 @@ function NewTask({ isModalOpen, handleOk, handleCancel, users }) {
 
   return (
     <Modal
-      title={" Welcome to New Task !!! "}
+      title={"!! Create New  Issuse !! "}
       open={isModalOpen}
       onOk={onSubmit}
       onCancel={handleCancel}

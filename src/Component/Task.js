@@ -31,7 +31,10 @@ import { GoTasklist } from "react-icons/go";
 
 import moment from "moment";
 import { LiaBell } from "react-icons/lia";
+import dayjs from "dayjs";
 const { TextArea } = Input;
+
+const { Option } = Select;
 
 const Task = ({ task, handleBackToList }) => {
   const dispatch = useDispatch();
@@ -170,8 +173,8 @@ const Task = ({ task, handleBackToList }) => {
     dispatch(updateSelectedTask(task.id, updatedFields));
 
     // Clear the input fields
-    // setComment("");
-    // setFileList([]);
+    setComment("");
+    setFileList([]);
     message.success("Comment added successfully");
   };
 
@@ -199,7 +202,12 @@ const Task = ({ task, handleBackToList }) => {
         : comment
     );
     setComments(updatedComments);
-    dispatch(updateSelectedTask(task.id, { ...editedValues, comments: updatedComments }));
+    dispatch(
+      updateSelectedTask(task.id, {
+        ...editedValues,
+        comments: updatedComments,
+      })
+    );
     setEditingCommentIndex(null);
     setEditedCommentText("");
     setEditedCommentImages([]);
@@ -208,7 +216,12 @@ const Task = ({ task, handleBackToList }) => {
   const handleDeleteComment = (index) => {
     const updatedComments = comments.filter((_, i) => i !== index);
     setComments(updatedComments);
-    dispatch(updateSelectedTask(task.id, { ...editedValues, comments: updatedComments }));
+    dispatch(
+      updateSelectedTask(task.id, {
+        ...editedValues,
+        comments: updatedComments,
+      })
+    );
   };
 
   const handleDeleteImage = (commentIndex, imageIndex) => {
@@ -223,7 +236,12 @@ const Task = ({ task, handleBackToList }) => {
       return comment;
     });
     setComments(updatedComments);
-    dispatch(updateSelectedTask(task.id, { ...editedValues, comments: updatedComments }));
+    dispatch(
+      updateSelectedTask(task.id, {
+        ...editedValues,
+        comments: updatedComments,
+      })
+    );
   };
 
   const handleCancelEditComment = () => {
@@ -284,7 +302,7 @@ const Task = ({ task, handleBackToList }) => {
   }
 
   const assignedUserName =
-   users && users.find((user) => user.name === task.assignedUser)?.name ||
+    (users && users.find((user) => user.name === task.assignedUser)?.name) ||
     "Unknown User";
 
   return (
@@ -297,22 +315,22 @@ const Task = ({ task, handleBackToList }) => {
             </div>
             <p className="p">!! Welcome to Task !!</p>
             <div className="task-3 btn">
-          <div className="task-actions">
-              <div className="logo-3">
-                <MdTrackChanges />
-              </div>
-              <Button onClick={handleSubmit} type="primary">
-                Save
-              </Button>
-            </div>
-
-            <div className="task-actions">
-              <div className="logo-3">
-                <IoChevronBackCircle />
+              <div className="task-actions">
+                <div className="logo-3">
+                  <MdTrackChanges />
+                </div>
+                <Button onClick={handleSubmit} type="primary">
+                  Save
+                </Button>
               </div>
 
-              <Button onClick={handleBackToList}>Back</Button>
-            </div>
+              <div className="task-actions">
+                <div className="logo-3">
+                  <IoChevronBackCircle />
+                </div>
+
+                <Button onClick={handleBackToList}>Back</Button>
+              </div>
             </div>
           </div>
 
@@ -350,7 +368,7 @@ const Task = ({ task, handleBackToList }) => {
                 {editMode.priority ? (
                   <Select
                     value={editedValues.priority}
-                    style={{width:"auto"}}
+                    style={{ width: "auto" }}
                     onChange={(value) => handleSelectChange(value, "priority")}
                   >
                     {uniquePriorities.map((priority, i) => (
@@ -381,11 +399,12 @@ const Task = ({ task, handleBackToList }) => {
                       handleSelectChange(value, "assignedUser")
                     }
                   >
-                    {users && users.map((user) => (
-                      <Select.Option key={user.name} value={user.name}>
-                        {user.name}
-                      </Select.Option>
-                    ))}
+                    {users &&
+                      users.map((user) => (
+                        <Select.Option key={user.name} value={user.name}>
+                          {user.name}
+                        </Select.Option>
+                      ))}
                   </Select>
                 ) : (
                   <div onClick={() => handleEdit("assignedUser")}>
@@ -444,31 +463,30 @@ const Task = ({ task, handleBackToList }) => {
             <MdOutlineTipsAndUpdates />
             </div> */}
             <div className="input-value">
-
               <div className="date">
                 {/* Assign Date */}
-                {editMode.assign_date ? (
-                  <DatePicker
+                 <div className="task-date-1">
+                  <label>Start Date :</label>
+                 <DatePicker
                     value={
                       editedValues.assign_date
-                        ? moment(editedValues.assign_date)
+                        ?dayjs(editedValues.assign_date)
                         : null
                     }
                     onChange={(date, dateString) =>
                       handleSelectChange(dateString, "assign_date")
                     }
                     onKeyDown={(e) => handleEnterPress(e, "assign_date")}
-                  />
-                ) : (
-                  <p onClick={() => handleEdit("assign_date")}>
-                    Start Date: {editedValues.assign_date}
-                  </p>
-                )}
-                {editMode.due_date ? (
-                  <DatePicker
+                    />
+                 </div>
+
+
+               <div className="task-date-2">
+                <label>End Date :</label>
+               <DatePicker
                     value={
                       editedValues.due_date
-                        ? moment(editedValues.due_date)
+                        ?  dayjs(editedValues.due_date)
                         : null
                     }
                     onChange={(date, dateString) =>
@@ -476,11 +494,9 @@ const Task = ({ task, handleBackToList }) => {
                     }
                     onKeyDown={(e) => handleEnterPress(e, "due_date")}
                   />
-                ) : (
-                  <p onClick={() => handleEdit("due_date")}>
-                    End date: {editedValues.due_date}
-                  </p>
-                )}
+               </div>
+
+
               </div>
             </div>
           </div>
@@ -507,6 +523,7 @@ const Task = ({ task, handleBackToList }) => {
                             onChange={handleUploadCommentImagesChange}
                             beforeUpload={() => false}
                             multiple
+                            className="task-upload"
                             showUploadList={{ showRemoveIcon: false }}
                           >
                             <Button icon={<UploadOutlined />}></Button>
@@ -518,7 +535,10 @@ const Task = ({ task, handleBackToList }) => {
                             Save
                           </Button>
 
-                          <Button onClick={handleCancelEditComment}>
+                          <Button
+                            className="task-cancel"
+                            onClick={handleCancelEditComment}
+                          >
                             Cancel
                           </Button>
                         </div>
@@ -535,10 +555,12 @@ const Task = ({ task, handleBackToList }) => {
                           <div key={idx}>
                             <Image
                               src={image.src}
+                              className=".comment-imag"
                               alt={`comment-image-${idx}`}
                               // style={{ width: "100px" }}
                             />
-                            <MdDeleteForever className="d"
+                            <MdDeleteForever
+                              className="d"
                               onClick={() => handleDeleteImage(index, idx)}
                             />
                           </div>
@@ -571,11 +593,12 @@ const Task = ({ task, handleBackToList }) => {
                   onChange={handleUploadChange}
                   beforeUpload={() => false}
                   multiple
+                  className="task-upload"
                   showUploadList={{ showRemoveIcon: false }}
                 >
                   <Button icon={<UploadOutlined />} />
                 </Upload>
-                <Button onClick={handleAddComment}  type="primary">
+                <Button onClick={handleAddComment} type="primary">
                   Add Comment
                 </Button>
               </div>
@@ -592,87 +615,77 @@ const Task = ({ task, handleBackToList }) => {
             </div>
 
             {/* Status */}
-            {editMode.status ? (
-              <Select
-                value={editedValues.status}
-                style={{ width: "100px" }}
-                onChange={(value) => handleSelectChange(value, "status")}
-              >
-                {uniqueStatus.map((option) => (
-                  <Select.Option key={option} value={option}>
-                    {option}
-                  </Select.Option>
-                ))}
-              </Select>
-            ) : (
-              <p onClick={() => handleEdit("status")}>{editedValues.status}</p>
-            )}
+
+            <Select
+              value={editedValues.status}
+              style={{ width: "120px" }}
+              onChange={(value) => handleSelectChange(value, "status")}
+            >
+              {uniqueStatus.map((option) => (
+                <Select.Option key={option} value={option}>
+                  {option}
+                </Select.Option>
+              ))}
+            </Select>
           </div>
           <div className="priority">
             {/* Priority */}
             <div className="logo-3">
               <FcHighPriority />
             </div>
-            {editMode.priority ? (
-              <Select
-                value={editedValues.priority}
-                onChange={(value) => handleSelectChange(value, "priority")}
-              >
-                {uniquePriorities.map((priority, i) => (
-                  <Select.Option key={i} value={priority}>
-                    {priority}
-                  </Select.Option>
-                ))}
-              </Select>
-            ) : (
-              <p onClick={() => handleEdit("priority")}>
-                {" "}
-                {editedValues.priority}
-              </p>
-            )}
+            <Select
+              value={editedValues.priority}
+              style={{ width: "120px" }}
+              onChange={(value) => handleSelectChange(value, "priority")}
+            >
+              {uniquePriorities.map((priority, i) => (
+                <Select.Option key={i} value={priority}>
+                  {priority}
+                </Select.Option>
+              ))}
+            </Select>
           </div>
-
           <div className="assign">
             <div className="logo-3">
               <FaRegUserCircle />
             </div>
             {/* Assigned User */}
-            {editMode.assignedUser ? (
-              <Select
-                showSearch
-                value={editedValues.assignedUser}
-                style={{ width: "120px" }}
-                onChange={(value) => handleSelectChange(value, "assignedUser")}
-              >
-                {users.map((user) => (
-                  <Select.Option key={user.name} value={user.name}>
-                    {user.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            ) : (
-              <div onClick={() => handleEdit("assignedUser")}>
-                {assignedUserName}
-              </div>
-            )}
+            <Select
+              showSearch
+              value={editedValues.assignedUser || undefined}
+              className="asign-user"
+              style={{ width: "120px" }}
+              placeholder="Assignee"
+              onChange={(value) => handleSelectChange(value, "assignedUser")}
+            >
+              {users.map((user) => (
+                <Option key={user.name} value={user.name}>
+                  {user.name}
+                </Option>
+              ))}
+            </Select>
           </div>
         </div>
         <div className="but">
-        <div className="task-actions">
-          <div className="logo-3">
-            <MdTrackChanges />
+          <div className="task-actions  button-main-task ">
+            <Button
+              icon={<MdTrackChanges className="logo-3" />}
+              onClick={handleSubmit}
+              type="primary"
+              className=" task-button"
+            >
+              Save Changes
+            </Button>
           </div>
-          <Button onClick={handleSubmit} type="primary">
-            Save Changes
-          </Button>
-        </div>
-
-        <div className="task-actions">
-          <div className="logo-3">
-            <IoChevronBackCircle />
+          <div className="task-actions  button-main-task ">
+            <Button
+              icon={<IoChevronBackCircle className="logo-3" />}
+              className="task-button-1"
+              onClick={handleBackToList}
+            >
+              Back to task
+            </Button>
           </div>
-          <Button onClick={handleBackToList}>Back to task</Button>
-        </div>
         </div>
       </div>
     </div>

@@ -1,36 +1,4 @@
- /* .main-register{
-     width: 100vw;
-     height: 100vh;
-     background:url(../image/bg1.jpg);
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     background-position: center;
-     background-size: cover;
-     background-repeat: no-repeat;
 
-}
-.register-form{
-     height: auto;
-     width:30% ;
-     border: 2px solid black;
-     border: 1px solid rgba(255, 255, 255, 0.5);
-     backdrop-filter: blur(9px);
-     -webkit-backdrop-filter: blur(9px);
-     padding-bottom: 1rem;
-     padding-right: 1rem;
-
-}
-.register-form h2{
-     text-align: center;
-     font-size: 40px;
-     margin-bottom: 1rem;
-}
-.backtoLOGIN{
-     margin-left: 1rem;
-}
-
-  */
   .main-register {
      width: 100vw;
      height: 100vh;
@@ -44,22 +12,49 @@
    }
 
    .register-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
      height: auto;
-     width:30%;
+     width:25%;
      border: 1px solid rgba(255, 255, 255, 0.5);
      backdrop-filter: blur(200px);
-    padding-right: 2rem;
+    /* margin-bottom: 2rem; */
+    padding-bottom: 1rem;
    }
+.form-register{
+      margin-top: 1.5rem;
+   width:80% !important ;
+
+  .ant-form-item-label{
+    text-align: start !important;
+    font-weight: 500;
+
+
+    /* font-size: 1.5rem !important; */
+
+  }
+}
 
 
    .register-form h2 {
-     text-align: center;
+    padding-top: 1rem;
+     /* text-align: center; */
      font-size: 40px;
-     margin-bottom: 1rem;
+     /* margin-bottom: 1rem; */
+    color: black;
    }
 
    .backtoLOGIN {
      margin-left: 1rem;
+   }
+   .error-1{
+    color: red;
+    text-align: center;
+
+  padding-top: 5px;
+
    }
 
    /* Media Queries for responsiveness */
@@ -142,6 +137,7 @@
     /* margin-right: 0.5rem !important; */
   }
   .ant-input{
+    width: 80%;
     padding: 1px 5px;
   }
   .ant-input-affix-wrapper {

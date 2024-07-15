@@ -86,11 +86,11 @@ h1{
  }
 
  .login {
-     height: auto;
-     width: 25%;
+     height:310px;
+     width: 23%;
      border: 1px solid rgba(255, 255, 255, 0.5);
-     backdrop-filter: blur(9px);
-     -webkit-backdrop-filter: blur(9px);
+     backdrop-filter: blur(200px);
+
      padding-bottom: 1rem;
  }
 
@@ -98,19 +98,20 @@ h1{
      display: flex;
      margin-left: 5rem;
      flex-direction: column;
-     margin-top: 2rem;
+     margin-bottom: 1rem;
  }
 
- h1 {
+ h1 { padding-top: 1rem;
      text-align: center;
-     font-size: 50px;
-     color: aliceblue;
+     font-size: 40px;
+     color: white;
  }
 
  .label {
-     color: aliceblue;
-     font-size: 20px;
-     padding-bottom: 1rem;
+    padding-top: 0.7rem;
+     color: white;
+     font-size: 17px;
+
  }
 
  .input {
@@ -118,19 +119,28 @@ h1{
  }
 
 .button-login{
-     margin-left: 5rem;
+     display: flex;
+     justify-content:center;
+     align-items: center;
 }
 
  .error {
      color: red;
-     font-weight: bold;
+     padding-left: 5px;
+     height: 1rem;
  }
 
  .Register {
      margin-left: 1rem;
+     background-color: white !important;
  }
 
  /* Media Queries */
+ @media (max-width:1440px){
+    .Register {
+        margin-left: 1rem;
+    }
+ }
 
  /* Tablets */
  @media (max-width:1030px){
@@ -143,6 +153,9 @@ h1{
         margin-left: 5rem;
 
    }
+   .Register {
+    margin-left: 1.5rem;
+}
 
  }
  @media (max-width: 768px) {
@@ -170,6 +183,9 @@ h1{
      .input {
          width: 80%;
      }
+     .Register {
+        margin-left: 2rem;
+    }
 
 
  }

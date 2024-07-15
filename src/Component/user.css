@@ -6,6 +6,9 @@
 .user-table-container h2{
      margin-top:5px;
 }
+.custom-table{
+    height: 80vh;
+}
 .u{
      display: flex;
      align-items: center;

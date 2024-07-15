@@ -40,8 +40,8 @@ const RightSide = ({
 
   const itemsPerPage = viewMode === "list" ? 6 : 3;
   console.log("---", tasks);
-  const data1 = useSelector((state) => state.tasksReducer.tasks);
-  console.log("datatas", data1);
+  // const data1 = useSelector((state) => state.tasksReducer.tasks);
+  // console.log("datatas", data1);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -106,7 +106,7 @@ const RightSide = ({
           </p>
           <p className="discrip p-2">
             <TbArrowRoundaboutRight /> :{" "}
-            {task.description.split(" ").slice(0, 5).join(" ") + "..."}
+            {task.description.slice(0,25) + "..."}
           </p>
           <div className="date-2 p3">
             <p>
@@ -253,8 +253,11 @@ const RightSide = ({
                     </div>
                     {renderTasksByStatus("InDevReview")}
                   </div>
-                )}
+                )
+                }
               </div>
+
+
             ) : (<div className="tasks-list">{renderTaskList()}</div>)
           ) : (
             <div className="task-details">
