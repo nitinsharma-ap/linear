@@ -156,6 +156,17 @@ code {
   :where(.css-dev-only-do-not-override-1fumvat).ant-pagination .ant-pagination-item a{
 
   }
+  .list{
+    .ant-menu-dark{
+      background: #2b2c37;
+    }
+  }
+  /* .assign-user{
+   {
+    background-color: #2b2c37;
+    color: white;
+    }
+  } */
   :where(.css-dev-only-do-not-override-1fumvat).ant-pagination .ant-pagination-prev .ant-pagination-item-link{
     background-color: none;
   }
@@ -259,10 +270,7 @@ code {
   .ant-select-arrow{
     color: white;
   }
-  /* .anticon.anticon-close-circle{
-    background-color: white ;
-    color:white;
-  } */
+
   .ant-select-dropdown-placement-bottomLeft {
     background-color: #505054;
 

@@ -1,8 +1,10 @@
+/*  Right side*/
 import React, { useState, useEffect } from "react";
 import { Button, List, Avatar, Input } from "antd";
 import { StepBackwardOutlined, StepForwardOutlined } from "@ant-design/icons";
 import "./rightSide.css";
 import Task from "./Task";
+
 import UsersComponent from "./User";
 import { GrTask } from "react-icons/gr";
 import { MdOutlineTipsAndUpdates } from "react-icons/md";
@@ -38,7 +40,7 @@ const RightSide = ({
   const [search, setSearch] = useState("");
   console.log(search);
 
-  const itemsPerPage = viewMode === "list" ? 6 : 3;
+  const itemsPerPage = viewMode === "list" ? 7: 3;
   console.log("---", tasks);
   // const data1 = useSelector((state) => state.tasksReducer.tasks);
   // console.log("datatas", data1);
@@ -84,6 +86,7 @@ const RightSide = ({
   console.log("--n",filter);
 
   const renderTasksByStatus = (status) => {
+
     const tasksByStatus = filteredTasks.filter(
       (task) => task.status.toLowerCase() === status.toLowerCase()
     );
@@ -91,6 +94,9 @@ const RightSide = ({
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const paginatedTasks = tasksByStatus.slice(startIndex, endIndex);
+    const totalPages = Math.ceil(filteredTasks.length / itemsPerPage);
+
+
 
     return paginatedTasks.map((task, index) => {
       const user =
@@ -129,6 +135,7 @@ const RightSide = ({
             <FaRegUser /> : {user ? user.name : "Assign"}
           </p>
         </div>
+
       );
     });
   };
@@ -195,6 +202,7 @@ const RightSide = ({
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
   };
+  console.log(filteredTasks.length,"hame");
 
   return (
     <div className={`right-side ${viewMode === "list" ? "list-view" : ""}`}>
@@ -267,18 +275,23 @@ const RightSide = ({
           )}
           {!selectedTask ? (
             <div className="pagination-controls">
+              <div className="pagination-btn-1" >
               <Button
                 type="primary"
                 icon={<StepBackwardOutlined />}
                 onClick={handlePrevPage}
                 disabled={currentPage === 1}
               />
-              <Button
+              </div>
+             <div className="pagination-btn-1">
+             <Button
                 type="primary"
                 icon={<StepForwardOutlined />}
                 onClick={handleNextPage}
                 disabled={filteredTasks.length <= currentPage * itemsPerPage}
               />
+             </div>
+
             </div>
           ) : (
             ""
