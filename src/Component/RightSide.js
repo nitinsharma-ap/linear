@@ -45,6 +45,8 @@ const RightSide = ({
   // const data1 = useSelector((state) => state.tasksReducer.tasks);
   // console.log("datatas", data1);
 
+
+
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, filter, viewMode]);
