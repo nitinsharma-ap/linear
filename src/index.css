@@ -96,7 +96,8 @@ code {
     color:white;
   }
   .modal-new-task{
-    .ant-btn.css-dev-only-do-not-override-1fumvat.ant-btn-default{
+    .ant-btn-default{
+      background-color: #2b2c37;
       color: white;
     }
 
@@ -138,24 +139,23 @@ code {
   .list-view .tasks-list .ant-list-item.ant-list-item-meta.ant-list-item-meta-content {
     color: white;
   }
-
-  :where(.css-dev-only-do-not-override-1fumvat).ant-list .ant-list-item .ant-list-item-meta .ant-list-item-meta-title {
+.Listview{
+  .ant-list-item-meta-title {
     color: white;
   }
-  .ant-btn.css-dev-only-do-not-override-1fumvat.ant-btn-default{
-    background-color: #2b2c37;
-    /* color: white; */
-  }
-  .textarea-container{
-    .ant-input.css-dev-only-do-not-override-1fumvat.ant-input-outlined{
+}
+.task-button-1{
+  background-color: #2b2c37;
+    color: white;
 
+}
+  .textarea-container{
+    .ant-input-outlined{
       background-color: #2b2c37;
       color: white;
     }
   }
-  :where(.css-dev-only-do-not-override-1fumvat).ant-pagination .ant-pagination-item a{
 
-  }
   .list{
     .ant-menu-dark{
       background: #2b2c37;
@@ -173,12 +173,12 @@ code {
   :where(.css-dev-only-do-not-override-1fumvat).ant-btn-primary:disabled{
     color: white;
   }
-   .task-button-1{
-    color: white;
+
+   .Listview{
+     .ant-list-item-meta-description {
+       color: white;
+     }
    }
-  :where(.css-dev-only-do-not-override-1fumvat).ant-list .ant-list-item .ant-list-item-meta .ant-list-item-meta-description {
-    color: white;
-  }
   .asign-user{
     .ant-select-selection-placeholder{
       color: #808080;
