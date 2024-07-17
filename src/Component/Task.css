@@ -320,16 +320,41 @@ font-size: 35px;
         width: auto;
     }
 }
+@media(max-width:1030px){
+
+
+    .task-1{
+        width: 72%;
+        margin-right: 0.3rem !important;
+        /* border: 2px solid red; */
+    }
+    .right-side{
+        margin-left: 2px;
+    }
+    .task-2{
+        width:auto;
+    }
+    .Dark p{
+        font-weight: normal;
+        font-size: 0.6rem;
+    }
+
+
+}
 @media (max-width:730px){
     .task-1{
         width: 72%;
         margin-right: 0.3rem !important;
     }
     .task-2{
-        width:27%;
+        width:auto;
     }
     .priority, .status, .assign, .task-actions{
         width: auto !important;
+    }
+    .Dark p{
+        font-weight: normal;
+        font-size: 0.5rem;
     }
 }
 
@@ -353,7 +378,7 @@ font-size: 35px;
         margin-top: 0rem !;
     }
     .task-1{
-        width: 100%;
+        width: auto;
     }
     .task-2{
         display: none;

@@ -252,7 +252,7 @@
 @media (max-width:430px){
 
   .Main {
-    width:auto!important;;
+    width:20% !important;;
     /* display: none; */
 /* height: 100%; */
   }
@@ -264,6 +264,7 @@
     margin-top: 5px !important;
     width: auto;
     display: flex;
+    padding-left: 0.5rem;
     align-items: center;
     justify-content:start !important;
     box-shadow: 0 10px 15px -3px rgba(163, 165, 170, 0.1), 0 4px 6px -2px rgba(54, 78, 126, 0.1);
@@ -281,15 +282,14 @@
   display:none !important;
 }
 .dark-mode{
-  display: flex;
-  width: auto;
-  height: 5vh;
-  justify-content:start;
-  align-items: center;
-  margin-bottom: 0rem !important;
-  gap: 0.5rem !important;
-  box-shadow: 0 20px 25px -5px rgba(54, 78, 126, 0.2), 0 10px 10px -5px rgba(54, 78, 126, 0.1);
+display: flex;
+justify-content: flex-start !important;
+margin-left: 0rem !important;
+gap: 0rem !important;
+
 }
+
+
 .ant-menu-item{
   padding-left: 5px !important;
   padding-top: 0px !important;
@@ -319,6 +319,21 @@
   line-height: normal !important;
 
 }
+.search-default{
+  :where(.css-dev-only-do-not-override-1fumvat).ant-input{
+  font-size: small !important;
+    line-height: normal;
+  }
+  .serach-bar{
+    .ant-input{
+      font-size: small !important;
+      line-height: normal !important;
+    }
+  }
+  /* .ant-input{
+    padding: 0px !important;
+  } */
+}
 
 
 
@@ -328,6 +343,26 @@
     width:20% !important;;
     /* display: none; */
 /* height: 100%; */
+  }
+  .userPhoto{
+    margin-top: 5px !important;
+    width: auto;
+    display: flex;
+    align-items: center;
+    justify-content:start !important;
+    box-shadow: 0 10px 15px -3px rgba(163, 165, 170, 0.1), 0 4px 6px -2px rgba(54, 78, 126, 0.1);
+    gap: 0px;
+    margin-bottom: 5px;
+    padding-left:0rem !important;
+  }
+  .userIcon {
+    font-size:1rem;
+    margin-bottom: 10px;
+  }
+  .dark-mode{
+    display: flex;
+    justify-content: start !important;
+    align-self:flex-start;
   }
   :where(.css-dev-only-do-not-override-1fumvat).ant-switch{
     max-width: 34px;

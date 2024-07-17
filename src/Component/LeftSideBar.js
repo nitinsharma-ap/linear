@@ -6,6 +6,8 @@ import {
   CheckCircleOutlined,
   SettingOutlined,
   UserOutlined,
+  HomeOutlined,
+  ExportOutlined,
 } from "@ant-design/icons";
 import { Menu, Switch, Button } from "antd";
 import useDarkMode from "../Dark/useDarkMode";
@@ -37,12 +39,12 @@ function LeftSideBar({
     {
       key: "home",
       label: "Home",
-      icon: <UserOutlined />,
+      icon: <HomeOutlined/>,
     },
     {
       key: "my_issues",
       label: "My Issues",
-      icon: <AppstoreOutlined />,
+      icon:<ExportOutlined />,
     },
     {
       key: "completed",
@@ -98,7 +100,7 @@ function LeftSideBar({
                     <p>Dark Mode </p>
                   </div>
                 </div>
-                <div>
+                <div className="s">
                   <Switch
                     size="small"
                     checked={theme === "dark"}

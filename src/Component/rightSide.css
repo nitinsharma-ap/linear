@@ -163,6 +163,16 @@ gap:2rem;
   #root{
     overflow: scroll;
   }
+  .pagination-controls {
+    display:flex;
+    justify-content: space-between !important;
+    align-items: center;
+    margin-top: 10px !important;
+    position: static;
+  }
+  .pagination-btn-1{
+
+  }
 }
 /* media qurry */
 @media (max-width:1300px){
@@ -181,6 +191,12 @@ gap:2rem;
 /* .task-card{
   width: 90%;
 } */
+.pagination-controls {
+  display:flex;
+  justify-content: space-between !important;
+  align-items: center;
+  margin-top: 10px !important;
+}
 .header-task {
     font-size: 14px;
   }
@@ -367,6 +383,22 @@ display: flex !important;
   }
   :where(.css-dev-only-do-not-override-1fumvat).ant-menu-inline .ant-menu-item{
     padding-inline: 1px !important;
+  }
+  .content .date{
+    display: flex;
+    gap:0.7rem !important;
+    font-size: 10px;
+  }
+  .task-date-1{
+    padding-left: 0rem !important;
+    gap: 0px !important;
+  }
+  .task-date-2{
+    padding-right: 0rem !important;
+    gap: 0px !important;
+  }
+  .comments h3{
+    margin-left:1rem !important ;
   }
 }
 @media (max-width:320px){

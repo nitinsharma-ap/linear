@@ -136,7 +136,7 @@
     margin-left:1rem;
     /* margin-right: 0.5rem !important; */
   }
-  .ant-input{
+  .form-register .ant-input{
     width: 80%;
     padding: 1px 5px;
   }
