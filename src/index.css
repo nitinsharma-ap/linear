@@ -109,13 +109,13 @@ code {
 
   }
   .custom-table{
-    :where(.css-dev-only-do-not-override-1fumvat).ant-pagination .ant-pagination-prev button{
+.ant-pagination-prev button,.ant-pagination-next button {
     color: white;
     }
-    :where(.css-dev-only-do-not-override-1fumvat).ant-pagination .ant-pagination-prev button, :where(.css-dev-only-do-not-override-1fumvat).ant-pagination .ant-pagination-next button {
+    /* :where(.css-dev-only-do-not-override-1fumvat).ant-pagination .ant-pagination-prev button, :where(.css-dev-only-do-not-override-1fumvat).ant-pagination .ant-pagination-next button {
       color: white;
-    }
-    :where(.css-dev-only-do-not-override-1fumvat).ant-pagination .ant-pagination-item a{
+    } */
+    .ant-pagination-item a{
       color: #1677ff;
     }
 
@@ -211,8 +211,7 @@ code {
     color: white;
   } */
    .search-bar{
-    .ant-input.css-dev-only-do-not-override-1fumvat.ant-input-outlined{
-
+  .ant-input-outlined{
       background-color: #2b2c37;
       color: white;
     }
