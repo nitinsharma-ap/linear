@@ -1,23 +1,14 @@
-
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
-  AppstoreOutlined,
   UsergroupAddOutlined,
   CheckCircleOutlined,
-  SettingOutlined,
-  UserOutlined,
   HomeOutlined,
   ExportOutlined,
 } from "@ant-design/icons";
-import { Menu, Switch, Button } from "antd";
+import { Menu, Switch } from "antd";
 import useDarkMode from "../Dark/useDarkMode";
-import { useDispatch } from "react-redux";
 import "./leftSide.css";
-import { fetchTasksRequest } from "../Redux/Action/action";
-import { FaUserCircle } from "react-icons/fa";
 import { MdSupportAgent } from "react-icons/md";
-
-import { RiLogoutCircleLine } from "react-icons/ri";
 import { CgDarkMode } from "react-icons/cg";
 
 function LeftSideBar({
@@ -29,29 +20,23 @@ function LeftSideBar({
 }) {
   const [theme, toggleTheme] = useDarkMode("");
   const [current, setCurrent] = useState("home");
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchTasksRequest());
-  }, [dispatch]);
 
   const items = [
     {
       key: "home",
       label: "Home",
-      icon: <HomeOutlined/>,
+      icon: <HomeOutlined />,
     },
     {
       key: "my_issues",
       label: "My Issues",
-      icon:<ExportOutlined />,
+      icon: <ExportOutlined />,
     },
     {
       key: "completed",
       label: "Completed",
       icon: <CheckCircleOutlined />,
     },
-
     {
       key: "users",
       label: "Users",
@@ -83,7 +68,12 @@ function LeftSideBar({
             <div className="userSection">
               <div className="userPhoto">
                 <div className="icon">
-                  <FaUserCircle className="userIcon" />
+                  {userVal.photo ? (
+                    <img src={userVal.photo} alt="User Avatar" className="userAvatar" />
+                  ) : (
+                    <img src="./ic.png" alt="Default Avatar" className="userAvatar" />
+                  )}
+                  <span className="livePoint"></span>
                 </div>
                 <div className="username">
                   {(
@@ -111,14 +101,11 @@ function LeftSideBar({
                   />
                 </div>
               </div>
-
               <br />
-
               <Menu
                 className="dark"
                 theme={theme === "dark" ? "dark" : "light"}
                 onClick={onClick}
-                // style={{ width: 256 }}
                 selectedKeys={[current]}
                 mode="inline"
                 items={items}
@@ -131,7 +118,12 @@ function LeftSideBar({
         <div className="userSection">
           <div className="userPhoto">
             <div className="icon">
-              <FaUserCircle className="userIcon" />
+              {userVal.photo ? (
+                <img src={userVal.photo} alt="User Avatar" className="userAvatar" />
+              ) : (
+                <img src="./ic.png" alt="Default Avatar" className="userAvatar" />
+              )}
+              <span className="livePoint"></span>
             </div>
             <div className="username">
               {(
@@ -139,33 +131,10 @@ function LeftSideBar({
               ).toUpperCase()}
             </div>
           </div>
-          {/* <div className="dark-mode">
-            <div className="Dark">
-              <div>
-                <CgDarkMode className="d1" />
-              </div>
-              <div>
-                <p>Dark Mode </p>
-              </div>
-            </div>
-            <div>
-              <Switch
-                checked={theme === "dark"}
-                className="switch"
-                onChange={toggleTheme}
-                checkedChildren="Dark"
-                unCheckedChildren="Light"
-              />
-            </div>
-          </div>
-
-          <br /> */}
-
           <Menu
             className="darkc"
             theme={theme === "dark" ? "dark" : "light"}
             onClick={onClick}
-            // style={{ width: 256 }}
             selectedKeys={[current]}
             mode="inline"
             items={items}
@@ -173,7 +142,7 @@ function LeftSideBar({
           <div className="dark-mode">
             <div className="Dark">
               <div>
-                <CgDarkMode  />
+                <CgDarkMode />
               </div>
               <div>
                 <p>Dark Mode </p>

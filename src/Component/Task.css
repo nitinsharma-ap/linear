@@ -1,5 +1,7 @@
  *{
    font-family: var(--font-regular);
+   scrollbar-width: 12px;
+    --scrollbar-min-size: 32px;
  }
 .task {
      height:100vh;
@@ -31,6 +33,7 @@
      display: flex;
      flex-direction: column;
      scrollbar-width: thin;
+     scrollbar-color: var(--scrollbar-color) transparent;
      align-items: center;
      overflow-y: auto;
 
@@ -97,6 +100,32 @@ padding-top: 3rem;
     margin-left: 1rem;
      margin-right: 1rem;
  }
+ .Comment-icon{
+    display: flex;
+   font-weight: 600;
+   font-family: var(--font-regular);
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+ }
+ .commets-icon-1{
+    position: relative;
+ }
+ .livePoint1{
+    width: 7px;
+    height: 7px;
+    background-color: green;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 6px;
+    right: 0;
+    border: 1px solid white;
+ }
+ .comments-logo {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
 
   .content .date {
      display: flex;
@@ -192,7 +221,7 @@ padding-top: 3rem;
   }
 
   .input-1 {
-    padding-right: 100px; /* Adjust this value based on button size */
+    padding-right: 100px;
   }
   .logo-2{
 font-size: 35px;

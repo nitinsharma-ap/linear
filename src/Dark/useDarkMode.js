@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toggleTheme } from '../Redux/Reducer/theamSlice';
 
 function useDarkMode() {
-  const theme = useSelector((state) => state.themeReducer.value); // Ensure the correct path to the theme state
+  const theme = useSelector((state) => state.themeReducer.value);
   const dispatch = useDispatch();
 
   useEffect(() => {

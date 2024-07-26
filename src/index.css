@@ -38,6 +38,7 @@ code {
   --background-color: #2b2c37;
   --text-color: white;
   --header-background: #2b2c37;
+  --scrollbar-color: #5a5b5d;
 
   .search-11 {
 
@@ -71,7 +72,7 @@ code {
 
   .modal-description {
     background-color: #2b2c37;
-    color: #c2b7b7;
+    color: white;
     opacity: var(--text-color);
   }
 
@@ -103,7 +104,8 @@ code {
 
   }
   .task-card:hover {
-    transform: translateY(1px);
+    transform: translateY(5px);
+
     /* box-shadow: 0 20px 25px -5px rgba(54, 78, 126, 0.2), 0 10px 10px -5px rgba(54, 78, 126, 0.1); */
     box-shadow: 0 20px 50px rgba(8, 112, 184, 0.7);
 
@@ -161,12 +163,45 @@ code {
       background: #2b2c37;
     }
   }
-  /* .assign-user{
-   {
-    background-color: #2b2c37;
-    color: white;
-    }
+  /* .chatbot{
+    background: #3b3b3e;
+
   } */
+  .chatbot-toggler{
+    background: #724ae8;
+  }
+  .chatbot header{
+    background: #724ae8;
+  }
+  .chatbox .incoming span{
+    background: #724ae8;
+  }
+  .chatbox .incoming p{
+    background: #ece7e7 !important;
+  }
+  .chatbox .chat p{
+    background: #724ae8;
+  }
+  /* .chatbot .chat-input{
+    background:#505054 ;
+  } */
+  /* .chat-input textarea{
+    background: #505054;
+    color: white;
+  } */
+  /* .chat-input textarea::placeholder{
+    color: #f7f7f7;
+  } */
+
+
+.chat-input span{
+  color: #724ae8;
+}
+
+  .chat-input textarea ::placeholder{
+    color: white;
+  }
+
   :where(.css-dev-only-do-not-override-1fumvat).ant-pagination .ant-pagination-prev .ant-pagination-item-link{
     background-color: none;
   }

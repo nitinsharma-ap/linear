@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import { Modal, DatePicker, Input, Select, message } from 'antd';
-import moment from 'moment';
 import "./newTask.css";
 import { GrTask } from "react-icons/gr";
 import { MdOutlineTipsAndUpdates } from "react-icons/md";
 import { GrValidate } from "react-icons/gr";
 import { TbArrowRoundaboutRight } from "react-icons/tb";
-import { GrStatusGoodSmall } from "react-icons/gr";
 import { FcMediumPriority } from "react-icons/fc";
 import { RiProgress2Fill } from "react-icons/ri";
 import { ImUsers } from "react-icons/im";
@@ -20,7 +18,7 @@ function NewTask({ isModalOpen, handleOk, handleCancel, users }) {
   const [dueDate, setDueDate] = useState(null);
   const [status, setStatus] = useState('Status');
   const [priority, setPriority] = useState('Priority');
-  const [assignedUser, setAssignedUser] = useState('Assign User'); // Default to 'admin'
+  const [assignedUser, setAssignedUser] = useState('Assign User');
 
   const onSubmit = () => {
     if (!taskTitle || !description || !assignDate || !dueDate || status === 'Status' || priority === 'Priority' || !assignedUser) {
@@ -44,21 +42,18 @@ function NewTask({ isModalOpen, handleOk, handleCancel, users }) {
 
     handleOk(task);
   message.success("You have succuss full add task.")
-
-
-    // Reset form fields after submission
     setTaskTitle('');
     setDescription('');
     setAssignDate('');
     setDueDate('');
     setStatus('Status');
     setPriority('Priority');
-    setAssignedUser('Assign User'); // Reset to default value
+    setAssignedUser('Assign User');
   };
 
   return (
     <Modal
-      title={"!! Create New  Issuse !! "}
+      title={" !! Create New  Issuse !! "}
       open={isModalOpen}
       onOk={onSubmit}
       onCancel={handleCancel}

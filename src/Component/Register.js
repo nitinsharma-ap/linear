@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
-import { Button, Checkbox, Form, Input, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { useState } from "react";
-import { registerUser, loginUser, updateData, add_user } from "../Redux/Action/action";
+import {add_user } from "../Redux/Action/action";
 import { useSelector, useDispatch } from "react-redux";
 const onFinish = (values) => {
   console.log("Success:", values);

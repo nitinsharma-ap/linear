@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-import { TbSubtask } from "react-icons/tb";
-import { GrTasks } from "react-icons/gr";
-import { GrValidate } from "react-icons/gr";
-import { MdOutlineUpdateDisabled } from "react-icons/md";
+import { BiSolidUserCircle } from "react-icons/bi";
 import {
   Button,
   Input,
@@ -17,20 +14,17 @@ import { SiGoogletasks } from "react-icons/si";
 import "./Task.css";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSelectedTask } from "../Redux/Action/action";
-import { MdOutlineTipsAndUpdates } from "react-icons/md";
+
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDeleteSweep } from "react-icons/md";
-import { FaComments } from "react-icons/fa";
+
 import { MdDeleteForever } from "react-icons/md";
 import { FcMediumPriority } from "react-icons/fc";
 import { FcHighPriority } from "react-icons/fc";
 import { FaRegUserCircle } from "react-icons/fa";
 import { MdTrackChanges } from "react-icons/md";
 import { IoChevronBackCircle } from "react-icons/io5";
-import { GoTasklist } from "react-icons/go";
 
-import moment from "moment";
-import { LiaBell } from "react-icons/lia";
 import dayjs from "dayjs";
 const { TextArea } = Input;
 
@@ -42,7 +36,7 @@ const Task = ({ task, handleBackToList }) => {
   const [comments, setComments] = useState(task?.comments || []);
 
   const data1 = useSelector((state) => state.tasksReducer.tasks);
-  console.log("d", data1);
+  console.log("d",users, data1);
   const [comment, setComment] = useState("");
   const [fileList, setFileList] = useState([]);
   const [editingCommentIndex, setEditingCommentIndex] = useState(null);
@@ -57,6 +51,7 @@ const Task = ({ task, handleBackToList }) => {
     status: false,
     assignedUser: false,
   });
+  const userVal = JSON.parse(localStorage.getItem('user'));
 
   const [initialValues] = useState({
     task_title: task?.task_title || "",
@@ -95,52 +90,7 @@ const Task = ({ task, handleBackToList }) => {
     }
   };
 
-  // const handleAddComment = () => {
-  //   if (!comment.trim()) {
-  //     message.error("Comment cannot be empty");
-  //     return;
-  //   }
-  //   setComments([
-  //     ...comments,
-  //     {
-  //       text: comment,
-  //       images: fileList.map((file) => ({
-  //         uid: file.uid,
-  //         src: URL.createObjectURL(file.originFileObj),
-  //         name: file.name,
-  //         type: file.type,
-  //         size: file.size,
-  //       })),
-  //     },
-  //   ]);
-  //   // setComment("");
-  //   // setFileList([]);
-  //   const updatedFields = {};
-  //   Object.keys(editedValues).forEach((field) => {
-  //     if (editedValues[field] !== initialValues[field]) {
-  //       updatedFields[field] = editedValues[field];
-  //     }
-  //   });
 
-  //   const serializedComments = comments.map((comment) => ({
-  //     text: comment.text,
-  //     images:
-  //       comment.images &&
-  //       comment.images.map((file) => ({
-  //         uid: file.uid,
-  //         src: file.src,
-  //         name: file.name,
-  //         type: file.type,
-  //         size: file.size,
-  //       })),
-  //   }));
-
-  //   if (comments !== task.comments) {
-  //     updatedFields.comments = serializedComments;
-  //   }
-
-  //   dispatch(updateSelectedTask(task.id, updatedFields));
-  // };
   const handleAddComment = () => {
     if (!comment.trim()) {
       message.error("Comment cannot be empty");
@@ -508,6 +458,15 @@ const Task = ({ task, handleBackToList }) => {
             <br></br>
             {comments.map((comment, index) => (
               <div key={index} className="comment-box">
+                <div className="Comment-icon">
+              <div className="commets-icon-1">
+              <img src="./ic.png"  className="comments-logo"/>
+                <span className="livePoint1"></span>
+                </div>
+                <p> {userVal.email.replace("@gmail.com","")}</p>
+                </div>
+
+
                 {editingCommentIndex === index ? (
                   <>
                     <div className="input-section">
@@ -550,19 +509,25 @@ const Task = ({ task, handleBackToList }) => {
                     <p>{comment.text}</p>
                     <br></br>
                     <div>
+
                       {comment.images &&
                         comment.images.map((image, idx) => (
+
                           <div key={idx}>
+                            <span>
                             <Image
                               src={image.src}
                               className=".comment-imag"
                               alt={`comment-image-${idx}`}
-                              // style={{ width: "100px" }}
+
                             />
+                            </span>
+
                             <MdDeleteForever
                               className="d"
                               onClick={() => handleDeleteImage(index, idx)}
                             />
+
                           </div>
                         ))}
                     </div>

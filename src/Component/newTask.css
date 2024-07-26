@@ -7,23 +7,13 @@
      gap: 10px;
 
 }
-.taskitle{
-     height: 8vh;
-     font-size: 19px;
-     /* margin-top: 1rem; */
 
-   /* box-shadow: 0 20px 25px -5px rgba(54, 78, 126, 0.2), 0 10px 10px -5px rgba(54, 78, 126, 0.1); */
-}
-.taskitle::placeholder{
-     font-size: 20px;
-}
 .modal-description{
      height: 30vh !important;
      font-size: 17px;
 
-     /* margin-bottom: 1rem; */
-     /* box-shadow: 0 20px 25px -5px rgba(54, 78, 126, 0.2), 0 10px 10px -5px rgba(54, 78, 126, 0.1);
-} */
+
+
 }
 .modal-description::placeholder{
      font-size:16px ;

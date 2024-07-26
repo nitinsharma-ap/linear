@@ -13,6 +13,39 @@
   flex-direction: column;
   /* height: 100%; */
 }
+.userAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.icon {
+  position: relative;
+}
+
+.livePoint {
+  width: 10px;
+  height: 10px;
+  background-color: green;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 9px;
+  right: 0;
+  border: 2px solid white;
+}
+
+.userPhoto {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.username {
+  font-size: 16px;
+  font-weight: bold;
+}
+
 .dropdown-2 {
   position: absolute;
   top: 100%; /* Positioning below the menu icon */

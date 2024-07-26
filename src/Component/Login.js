@@ -11,17 +11,15 @@ import { useNavigate } from "react-router-dom";
 const Login = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.subReducer.tasks);
-  const data1 = useSelector((state) => state)
-  console.log("da",data1);
-  console.log("us",data);
+
+
   const navigate = useNavigate();
 
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [UserIdError, setUserIdError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  // const valid = useSelector((state) => state.Register.users);
-  // console.log(valid);
+
 
   useEffect(() => {
     if(!data.length){
@@ -107,7 +105,7 @@ const Login = () => {
                 onChange={(e) => setUserId(e.target.value)}
               />
               {<span className="error">{UserIdError && UserIdError}</span>}
-              {/* <br /> */}
+             
               <label className="label">Password</label>
               <Input
                 type="password"

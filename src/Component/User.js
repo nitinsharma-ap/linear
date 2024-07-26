@@ -78,7 +78,6 @@ const UserTable = ({ users, theme }) => {
     </div>
 
       <Table
-
         className="custom-table"
         columns={columns}
         dataSource={filteredUsers}

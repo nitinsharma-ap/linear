@@ -1,11 +1,9 @@
 /*  Right side*/
-import React, { useState, useEffect } from "react";
-import { Button, List, Avatar, Input } from "antd";
+import React, { useState} from "react";
+import { Button, List, Avatar, } from "antd";
 import { StepBackwardOutlined, StepForwardOutlined } from "@ant-design/icons";
 import "./rightSide.css";
 import Task from "./Task";
-
-import UsersComponent from "./User";
 import { GrTask } from "react-icons/gr";
 import { MdOutlineTipsAndUpdates } from "react-icons/md";
 import { TbArrowRoundaboutRight } from "react-icons/tb";
@@ -13,46 +11,23 @@ import { GrValidate } from "react-icons/gr";
 import { GrStatusGoodSmall } from "react-icons/gr";
 import { FcMediumPriority } from "react-icons/fc";
 import { FaRegUser } from "react-icons/fa";
-import { useSelector } from "react-redux";
 import { FaUserCircle } from "react-icons/fa";
-
 import Support from "./Support";
 import UserTable from "./User";
-const { Search } = Input;
 
-const RightSide = ({
-  tasks,
-  filter,
-  searchQuery,
-  viewMode,
-  users,
-  hideHeader,
-  showHeader,
-
-  selectedTask,
-  setSelectedTask
+const RightSide = ({tasks,filter,searchQuery,viewMode, users,hideHeader,showHeader,
+selectedTask,setSelectedTask,
 }) => {
   console.log("vivek", filter);
   const [currentPage, setCurrentPage] = useState(1);
-  // const [selectedTask, setSelectedTask] = useState(null);
 
-  const [data, setData] = useState(null);
-  const [search, setSearch] = useState("");
-  console.log(search);
-
-  const itemsPerPage = viewMode === "list" ? 7: 3;
-  console.log("---", tasks);
-  // const data1 = useSelector((state) => state.tasksReducer.tasks);
-  // console.log("datatas", data1);
+  const itemsPerPage = viewMode === "grid" ? 3 : 7;
+  console.log("task", tasks);
 
 
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [searchQuery, filter, viewMode]);
 
   const filteredTasks = tasks.filter((task) => {
-    const query = searchQuery.toLowerCase() || search.toLowerCase();
+    const query = searchQuery.toLowerCase();
     console.log("v1", query);
     const matchesSearchQuery =
       task.task_title.toLowerCase().includes(query) ||
@@ -85,25 +60,26 @@ const RightSide = ({
     setSelectedTask(null);
     showHeader();
   };
-  console.log("--n",filter);
+  console.log("--n", filter);
+
 
   const renderTasksByStatus = (status) => {
-
     const tasksByStatus = filteredTasks.filter(
       (task) => task.status.toLowerCase() === status.toLowerCase()
     );
     console.log("renderTasksByStatus", tasksByStatus, filteredTasks);
     const startIndex = (currentPage - 1) * itemsPerPage;
+    console.log("1",startIndex);
     const endIndex = startIndex + itemsPerPage;
     const paginatedTasks = tasksByStatus.slice(startIndex, endIndex);
-    const totalPages = Math.ceil(filteredTasks.length / itemsPerPage);
-
+    console.log("pagi",paginatedTasks);
 
 
     return paginatedTasks.map((task, index) => {
       const user =
         users && users.find((user) => user.name === task.assignedUser);
       return (
+
         <div
           key={index}
           className="task-card"
@@ -113,8 +89,7 @@ const RightSide = ({
             <GrTask /> : {task.task_title}
           </p>
           <p className="discrip p-2">
-            <TbArrowRoundaboutRight /> :{" "}
-            {task.description.slice(0,25) + "..."}
+            <TbArrowRoundaboutRight /> : {task.description.slice(0, 25) + "..."}
           </p>
           <div className="date-2 p3">
             <p>
@@ -137,7 +112,6 @@ const RightSide = ({
             <FaRegUser /> : {user ? user.name : "Assign"}
           </p>
         </div>
-
       );
     });
   };
@@ -146,6 +120,7 @@ const RightSide = ({
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
     const paginatedTasks = filteredTasks.slice(startIndex, endIndex);
+    console.log("pagi",paginatedTasks);
 
     return (
       <List
@@ -153,8 +128,8 @@ const RightSide = ({
         className="Listview"
         dataSource={paginatedTasks}
         renderItem={(item, index) => {
-          const user =
-            users && users.find((user) => user.name === item.assignedUser);
+
+      const user = users && users.find((user) => user.name === item.assignedUser);
           return (
             <List.Item onClick={() => handleTaskCardClick(item)}>
               <List.Item.Meta
@@ -169,8 +144,7 @@ const RightSide = ({
                   <div className="list-task">
                     <div className="list-task-1">
                       <TbArrowRoundaboutRight />{" "}
-                      {item.description.split(" ").slice(0, 5).join(" ") +
-                        "..."}
+                      {item.description.slice(0, 25) + "..."}
                     </div>
                     <div>
                       <MdOutlineTipsAndUpdates /> {item.assign_date}
@@ -198,13 +172,29 @@ const RightSide = ({
   };
 
   const handleNextPage = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
+    if (currentPage * itemsPerPage < filteredTasks.length) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
   };
 
   const handlePrevPage = () => {
     setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+
   };
-  console.log(filteredTasks.length,"hame");
+  console.log(filteredTasks.length, currentPage,itemsPerPage, "hame");
+
+const len1 = renderTasksByStatus("Todo").length;
+const len2 = renderTasksByStatus("InProgress").length;
+const len3 = renderTasksByStatus("Done").length;
+const len4 = renderTasksByStatus("InDevReview").length;
+
+
+const countTasksByStatus = (status) => {
+  return filteredTasks.filter(
+    (task) => task.status.toLowerCase() === status.toLowerCase()
+  ).length;
+};
+
 
   return (
     <div className={`right-side ${viewMode === "list" ? "list-view" : ""}`}>
@@ -214,8 +204,7 @@ const RightSide = ({
         </div>
       ) : filter === "users" ? (
         <UserTable users={users} />
-      ) :
-       (
+      ) : (
         <>
           {!selectedTask ? (
             viewMode === "grid" ? (
@@ -226,9 +215,9 @@ const RightSide = ({
                   <div className="column">
                     <div className="point">
                       <div className="todo"></div>
-                      <h3>ToDo</h3>
+                      <h3>ToDo ({countTasksByStatus("Todo")})</h3>
                     </div>
-                    <div className="col-1">{renderTasksByStatus("Todo")}</div>
+                    <div className="col-1">{renderTasksByStatus("Todo") }</div>
                   </div>
                 )}
                 {filter === "completed" ? (
@@ -237,7 +226,7 @@ const RightSide = ({
                   <div className="column">
                     <div className="point">
                       <div className="pro"></div>
-                      <h3>InProgress</h3>
+                      <h3>InProgress ({countTasksByStatus("InProgress")})</h3>
                     </div>
                     {renderTasksByStatus("InProgress")}
                   </div>
@@ -248,7 +237,7 @@ const RightSide = ({
                   <div className="column">
                     <div className="point">
                       <div className="done"></div>
-                      <h3>Done</h3>
+                      <h3>Done ({countTasksByStatus("Done")})</h3>
                     </div>
                     {renderTasksByStatus("Done")}
                   </div>
@@ -259,41 +248,43 @@ const RightSide = ({
                   <div className="column">
                     <div className="point">
                       <div className="in"></div>
-                      <h3>InDevReview</h3>
+                      <h3>InDevReview ({countTasksByStatus("InDevReview")})</h3>
                     </div>
                     {renderTasksByStatus("InDevReview")}
                   </div>
-                )
-                }
+                )}
               </div>
-
-
-            ) : (<div className="tasks-list">{renderTaskList()}</div>)
+            ) : (
+              <div className="tasks-list">{renderTaskList()}</div>
+            )
           ) : (
             <div className="task-details">
-              <Task setCurrentPage
-             task={selectedTask} handleBackToList={handleBackToList} />
+              <Task
+
+                task={selectedTask}
+                handleBackToList={handleBackToList}
+              />
             </div>
           )}
           {!selectedTask ? (
             <div className="pagination-controls">
-              <div className="pagination-btn-1" >
-              <Button
-                type="primary"
-                icon={<StepBackwardOutlined />}
-                onClick={handlePrevPage}
-                disabled={currentPage === 1}
-              />
+              <div className="pagination-btn-1">
+                <Button
+                  type="primary"
+                  icon={<StepBackwardOutlined />}
+                  onClick={handlePrevPage}
+                  disabled={currentPage === 1}
+                />
               </div>
-             <div className="pagination-btn-1">
-             <Button
-                type="primary"
-                icon={<StepForwardOutlined />}
-                onClick={handleNextPage}
-                disabled={filteredTasks.length <= currentPage * itemsPerPage}
-              />
-             </div>
+              <div className="pagination-btn-1">
+                <Button
+                  type="primary"
+                  icon={<StepForwardOutlined />}
+                  onClick={handleNextPage}
+                  disabled ={viewMode === "list" ? (filteredTasks.length<= currentPage * itemsPerPage) : (len1 <=1 && len2 <=1 && len3 <=1 && len4 <=1 )}
 
+                />
+              </div>
             </div>
           ) : (
             ""
