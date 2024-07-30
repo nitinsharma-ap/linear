@@ -14,6 +14,7 @@
 .tasks-grid {
   width:100%;
 
+
   height: calc(100% - 20px);
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
@@ -24,6 +25,7 @@
 }
 .task-card {
   border-radius: 0.5rem;
+  vertical-align: top;
 
   flex-wrap: wrap;
   /* background-color: white; */
@@ -37,6 +39,7 @@
 
 .list-task{
   display: flex;
+
   align-items: center;
 gap:2rem;
  /* gap:3rem ; */
@@ -50,29 +53,47 @@ gap:2rem;
 
 }
 
-/* .task-card:hover {
-  color: rgb(99 95 199);
-} */
 
+.icon-list{
+  padding-top: 5px !important;
+
+}
+.admin-right{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .header-task {
   margin-top: 0;
   /* font-size: 20px; */
+
   font-weight: bold;
+  vertical-align:a !important;
+
 }
 
 .task-card p {
   margin: 5px 0;
-}
 
-/* .button-logout {
-  margin-top: 20px;
-  text-align: right;
-} */
+
+}
+.comments-logo-1{
+border-radius: 50%;
+font-size: larger;
+background-color: #22c55e;
+/* font-weight: 800; */
+font-size:20px;
+text-align: center;
+color:white;
+height:2rem;
+width: 2rem;
+}
 
 .point {
   display: flex;
   align-items: center;
   margin-bottom:5px;
+
 
 }
 
@@ -123,9 +144,11 @@ gap:2rem;
 #root{
   overflow: hidden;
 }
+.header-task .p-1{
+  display: flex;
+  align-items: center;
+}
 
-
-/* Additional styles for list view mode */
 .list-view .right-side {
   border-color: deepskyblue;
 }
@@ -133,7 +156,7 @@ gap:2rem;
 .list-view .tasks-list .ant-list-item {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   border-radius: 0.5rem;
-  /* color: rgb(255, 255, 255) !important; */
+
   box-shadow: 0 10px 15px -3px rgba(163, 165, 170, 0.1), 0 4px 6px -2px rgba(54, 78, 126, 0.1);
   cursor: pointer;
   margin-bottom: 1rem;
@@ -144,7 +167,7 @@ gap:2rem;
   transform: translateY(10px);
   box-shadow: 0 20px 25px -5px rgba(54, 78, 126, 0.2), 0 10px 10px -5px rgba(54, 78, 126, 0.1);
 }
-/*  */
+
 .date-2{
   display: flex;
   gap: 10px;
@@ -301,6 +324,7 @@ gap:2rem;
     }
 
 }
+
 
 
 @media (max-width:430px){

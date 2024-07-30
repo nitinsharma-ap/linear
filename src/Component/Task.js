@@ -611,8 +611,12 @@ const Task = ({ task, handleBackToList }) => {
             </Select>
           </div>
           <div className="assign">
-            <div className="logo-3">
-              <FaRegUserCircle />
+            <div className="">
+
+              <div className="commets-icon-1">
+              <img src="./ic.png"  className="comments-logo"/>
+                <span className="livePoint1"></span>
+                </div>
             </div>
             {/* Assigned User */}
             <Select
@@ -639,7 +643,7 @@ const Task = ({ task, handleBackToList }) => {
               type="primary"
               className=" task-button"
             >
-              Save Changes
+              Save changes
             </Button>
           </div>
           <div className="task-actions  button-main-task ">

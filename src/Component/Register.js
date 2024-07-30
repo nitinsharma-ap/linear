@@ -66,7 +66,7 @@ if (!emailRegex.test(user.email)) {
   return (
     <div className="main-register">
       <div className="register-form">
-        <h2 className="reg">SignUp </h2>
+        <h2 className="reg">Sign up </h2>
         <Form
           name="basic"
           className="form-register"
@@ -157,18 +157,14 @@ if (!emailRegex.test(user.email)) {
           </Form.Item>
 
           <Form.Item
-
-            wrapperCol={{
-              offset: 8,
-              span: 16,
-            }}
+          className="singup-page"
           >
             <Button
               onClick={() => handleSub()}
               type="primary"
               htmlType="submit"
             >
-              SignUp
+              Sign up
             </Button>
             <Button
               onClick={() => handleCancle()}
@@ -176,7 +172,7 @@ if (!emailRegex.test(user.email)) {
               htmlType="submit"
               className="backtoLOGIN"
             >
-              Login
+              Back to login
             </Button>
           </Form.Item>
         </Form>

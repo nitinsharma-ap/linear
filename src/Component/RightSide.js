@@ -11,6 +11,7 @@ import { GrValidate } from "react-icons/gr";
 import { GrStatusGoodSmall } from "react-icons/gr";
 import { FcMediumPriority } from "react-icons/fc";
 import { FaRegUser } from "react-icons/fa";
+import { SlCalender } from "react-icons/sl";
 import { FaUserCircle } from "react-icons/fa";
 import Support from "./Support";
 import UserTable from "./User";
@@ -21,10 +22,8 @@ selectedTask,setSelectedTask,
   console.log("vivek", filter);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const itemsPerPage = viewMode === "grid" ? 3 : 7;
+  const itemsPerPage = viewMode === "grid" ? 3 : 15;
   console.log("task", tasks);
-
-
 
   const filteredTasks = tasks.filter((task) => {
     const query = searchQuery.toLowerCase();
@@ -63,6 +62,7 @@ selectedTask,setSelectedTask,
   console.log("--n", filter);
 
 
+
   const renderTasksByStatus = (status) => {
     const tasksByStatus = filteredTasks.filter(
       (task) => task.status.toLowerCase() === status.toLowerCase()
@@ -76,8 +76,8 @@ selectedTask,setSelectedTask,
 
 
     return paginatedTasks.map((task, index) => {
-      const user =
-        users && users.find((user) => user.name === task.assignedUser);
+
+      const user = users && users.find((user) => user.name === task.assignedUser);
       return (
 
         <div
@@ -85,31 +85,41 @@ selectedTask,setSelectedTask,
           className="task-card"
           onClick={() => handleTaskCardClick(task)}
         >
+          <div className="admin-right">
           <p className="header-task p-1">
-            <GrTask /> : {task.task_title}
+            <GrTask className="icon-list" />  {task.task_title.slice(0,25)}
           </p>
+          <div className="commets-icon-1">
+
+              <div   className="comments-logo-1"> {user ?user.name.slice(0,1) :  <img src="./ic.png"  className="comments-logo"/>} </div>
+                <span className="livePoint1"></span>
+                </div>
+
+          </div>
           <p className="discrip p-2">
-            <TbArrowRoundaboutRight /> : {task.description.slice(0, 25) + "..."}
+            <TbArrowRoundaboutRight className="icon-list"  />  {task.description.slice(0, 25) + "..."}
           </p>
+
           <div className="date-2 p3">
             <p>
-              <MdOutlineTipsAndUpdates /> : {task.assign_date}
+            <SlCalender  className="icon-list" />  {task.assign_date}
             </p>
             <p>
-              <GrValidate /> : {task.due_date}
+              <GrValidate className="icon-list"  />  {task.due_date}
             </p>
           </div>
           <div className="Horigental p-4">
             <p>
-              <GrStatusGoodSmall /> : {task.status}
+              <GrStatusGoodSmall className="icon-list"  />  {task.status}
             </p>
             <p>
-              <FcMediumPriority /> : {task.priority}
+              <FcMediumPriority className="icon-list"  /> {task.priority}
             </p>
-            {console.log("e===>>", task)}
+
+
           </div>
           <p className="p-5">
-            <FaRegUser /> : {user ? user.name : "Assign"}
+            <FaRegUser className="icon-list"  />  {user ? user.name : "Assign"}
           </p>
         </div>
       );
@@ -143,23 +153,25 @@ selectedTask,setSelectedTask,
                 description={
                   <div className="list-task">
                     <div className="list-task-1">
-                      <TbArrowRoundaboutRight />{" "}
+                      <TbArrowRoundaboutRight className="icon-list"  />{" "}
                       {item.description.slice(0, 25) + "..."}
                     </div>
                     <div>
-                      <MdOutlineTipsAndUpdates /> {item.assign_date}
+                    <SlCalender className="icon-list" /> {item.assign_date}
+                    </div>
+
+                    <div>
+                      <GrStatusGoodSmall className="icon-list"  /> {item.status}
                     </div>
                     <div>
-                      <GrStatusGoodSmall /> {item.status}
+                      <FcMediumPriority className="icon-list"  /> {item.priority}
+                    </div>
+
+                    <div>
+                      <GrValidate className="icon-list" /> {item.due_date}
                     </div>
                     <div>
-                      <FcMediumPriority /> {item.priority}
-                    </div>
-                    <div>
-                      <GrValidate /> {item.due_date}
-                    </div>
-                    <div>
-                      <FaUserCircle /> {user ? user.name : " User"}
+                      <FaUserCircle className="icon-list" /> {user ? user.name : " User"}
                     </div>
                   </div>
                 }
@@ -196,6 +208,7 @@ const countTasksByStatus = (status) => {
 };
 
 
+
   return (
     <div className={`right-side ${viewMode === "list" ? "list-view" : ""}`}>
       {filter === "support" ? (
@@ -215,7 +228,7 @@ const countTasksByStatus = (status) => {
                   <div className="column">
                     <div className="point">
                       <div className="todo"></div>
-                      <h3>ToDo ({countTasksByStatus("Todo")})</h3>
+                      <h3>Todo ({countTasksByStatus("Todo")})</h3>
                     </div>
                     <div className="col-1">{renderTasksByStatus("Todo") }</div>
                   </div>
@@ -226,7 +239,7 @@ const countTasksByStatus = (status) => {
                   <div className="column">
                     <div className="point">
                       <div className="pro"></div>
-                      <h3>InProgress ({countTasksByStatus("InProgress")})</h3>
+                      <h3>In-progress ({countTasksByStatus("InProgress")})</h3>
                     </div>
                     {renderTasksByStatus("InProgress")}
                   </div>
@@ -248,7 +261,7 @@ const countTasksByStatus = (status) => {
                   <div className="column">
                     <div className="point">
                       <div className="in"></div>
-                      <h3>InDevReview ({countTasksByStatus("InDevReview")})</h3>
+                      <h3>In-dev review ({countTasksByStatus("InDevReview")})</h3>
                     </div>
                     {renderTasksByStatus("InDevReview")}
                   </div>
@@ -260,7 +273,6 @@ const countTasksByStatus = (status) => {
           ) : (
             <div className="task-details">
               <Task
-
                 task={selectedTask}
                 handleBackToList={handleBackToList}
               />

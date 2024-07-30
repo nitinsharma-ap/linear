@@ -27,11 +27,11 @@
 .livePoint {
   width: 10px;
   height: 10px;
-  background-color: green;
+  background-color:rgb(71, 196, 128);
   border-radius: 50%;
   position: absolute;
   bottom: 9px;
-  right: 0;
+  right: 0px;
   border: 2px solid white;
 }
 

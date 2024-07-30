@@ -53,7 +53,7 @@ function NewTask({ isModalOpen, handleOk, handleCancel, users }) {
 
   return (
     <Modal
-      title={" !! Create New  Issuse !! "}
+      title={" !! Create New Task !! "}
       open={isModalOpen}
       onOk={onSubmit}
       onCancel={handleCancel}
@@ -121,10 +121,10 @@ function NewTask({ isModalOpen, handleOk, handleCancel, users }) {
             value={priority}
             onChange={(value) => setPriority(value)}
           >
-            <Option value="Priority">Priority</Option>
+            <Option  value="Priority">Priority</Option>
             <Option value="Urgent">Urgent</Option>
-            <Option value="WithinOneDay">Within One Day</Option>
-            <Option value="AfterReview">After Review</Option>
+            <Option value="WithinOneDay">High</Option>
+            <Option value="AfterReview">Low</Option>
           </Select>
         </div>
         <div className='modal-admin icon-center'>

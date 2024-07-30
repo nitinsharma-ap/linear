@@ -4,6 +4,10 @@ import "./Support.css";
 function Support() {
     const qaPairs = [
         {
+        question:"Hi",
+        answer : " Hello, How may I assist you "
+        },
+        {
             question: "How do I reset my password?",
             answer: "To reset your password, please visit our website and navigate to the 'Forgot Password' page."
         },
@@ -16,8 +20,8 @@ function Support() {
             answer: "You can update your account information by logging into your account and visiting the 'Account Settings' page."
         },
         {
-            question: "Hey",
-            answer: "You can update your account information by logging into your account and visiting the 'Account Settings' page."
+            question: "how to create a task",
+            answer: "you visite on  dashboard  , you can click  add new task button  fill the all field and definatily you can successfully  create  task"
         },
         {
             question: "how to create a new task",

@@ -105,7 +105,7 @@ const Login = () => {
                 onChange={(e) => setUserId(e.target.value)}
               />
               {<span className="error">{UserIdError && UserIdError}</span>}
-             
+
               <label className="label">Password</label>
               <Input
                 type="password"
@@ -122,7 +122,7 @@ const Login = () => {
               Login
             </Button>
             <Button onClick={handleRegister} className="Register">
-              SignUp
+              Sign up
             </Button>
             </div>
 
