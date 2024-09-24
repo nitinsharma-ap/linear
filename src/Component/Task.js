@@ -13,7 +13,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { SiGoogletasks } from "react-icons/si";
 import "./Task.css";
 import { useDispatch, useSelector } from "react-redux";
-import { updateSelectedTask } from "../Redux/Action/action";
+import { updateSelectedTask, updateTask } from "../Redux/Action/action";
 
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDeleteSweep } from "react-icons/md";
@@ -106,7 +106,7 @@ const Task = ({ task, handleBackToList }) => {
         name: file.name,
         type: file.type,
         size: file.size,
-      })),
+      })), 
     };
 
     // Update comments state
@@ -121,6 +121,7 @@ const Task = ({ task, handleBackToList }) => {
 
     // Dispatch the action to update the task in Redux
     dispatch(updateSelectedTask(task.id, updatedFields));
+
 
     // Clear the input fields
     setComment("");
@@ -241,8 +242,9 @@ const Task = ({ task, handleBackToList }) => {
     if (comments !== task.comments) {
       updatedFields.comments = serializedComments;
     }
+      dispatch(updateTask(task.id,updatedFields))
+    // dispatch(updateSelectedTask(task.id, updatedFields));
 
-    dispatch(updateSelectedTask(task.id, updatedFields));
     message.success("  save data success");
     handleBackToList();
   };

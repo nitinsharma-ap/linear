@@ -7,6 +7,7 @@ function* rootSaga() {
   yield all([
      mySaga(),
     taskSaga(),
+    
 
   ]);
   console.log("NITIN");

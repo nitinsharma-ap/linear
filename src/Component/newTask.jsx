@@ -28,6 +28,7 @@ function NewTask({ isModalOpen, handleOk, handleCancel, users }) {
 
     const formattedAssignDate = assignDate ? assignDate.format('YYYY-MM-DD') : null;
     const formattedDueDate = dueDate ? dueDate.format('YYYY-MM-DD') : null;
+    const token = localStorage.getItem('token');
 
     const task = {
       key: Date.now(),
@@ -39,6 +40,8 @@ function NewTask({ isModalOpen, handleOk, handleCancel, users }) {
       priority,
       assignedUser
     };
+
+    // dispatch(createTaskRequest(task)); 
 
     handleOk(task);
   message.success("You have succuss full add task.")
@@ -110,7 +113,7 @@ function NewTask({ isModalOpen, handleOk, handleCancel, users }) {
             <Option value="Todo">Todo</Option>
             <Option value="Done">Done</Option>
             <Option value="InProgress">In Progress</Option>
-            <Option value="InDevReview">In Dev Review</Option>
+            <Option value="InDevReview">InDevReview</Option>
           </Select>
         </div>
         <div className='icon-center'>
@@ -123,8 +126,8 @@ function NewTask({ isModalOpen, handleOk, handleCancel, users }) {
           >
             <Option  value="Priority">Priority</Option>
             <Option value="Urgent">Urgent</Option>
-            <Option value="WithinOneDay">High</Option>
-            <Option value="AfterReview">Low</Option>
+            <Option value="High">High</Option>
+            <Option value="Low">Low</Option>
           </Select>
         </div>
         <div className='modal-admin icon-center'>

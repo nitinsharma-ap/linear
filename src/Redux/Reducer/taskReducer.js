@@ -4,16 +4,26 @@ import {
   ADD_TASK,
   EDIT_TASK,
   DELETE_TASK,
+  CREATE_TASK_SUCCESS,
+  CREATE_TASK_FAILURE,
+  FETCH_USERS_SUCCESS,
+  FETCH_USERS_FAILURE,
+  FETCH_USERS_REQUEST,
+  UPDATE_TASK_SUCCESS,
+  UPDATE_TASK_FAILURE,
 } from '../Action/action';
 import {UPDATE_SELECTED_TASK} from '../Action/constant';
 const initialState = {
   tasks: [],
   error: null,
+  users :[]
 };
 
 const tasksReducer = (state = initialState, action) => {
   // console.log("==>",action.payload.updatedFields );
   switch (action.type) {
+    // Add the new task to the tasks array
+     
     case FETCH_TASKS_SUCCESS:
       return {
         ...state,
@@ -25,11 +35,19 @@ const tasksReducer = (state = initialState, action) => {
         ...state,
         error: action.payload,
       };
-    case ADD_TASK:
-      return {
-        ...state,
-        tasks: [ action.payload , ...state.tasks],
-      };
+    // case ADD_TASK:
+    //   return {
+    //     ...state,
+    //     tasks: [ action.payload , ...state.tasks],
+    //   };
+      case  ADD_TASK:
+      return { ...state};
+
+    case CREATE_TASK_SUCCESS:
+      return { ...state, 
+         tasks: [...state.tasks, action.payload] };
+    case CREATE_TASK_FAILURE:
+      return { ...state, error: action.payload };
     case EDIT_TASK:
       return {
         ...state,
@@ -37,6 +55,37 @@ const tasksReducer = (state = initialState, action) => {
           task.key === action.payload.key ? action.payload : task
         ),
       };
+    case FETCH_USERS_REQUEST:
+      return {
+        ... state
+      }
+    case FETCH_USERS_SUCCESS:
+      return {
+         ... state,
+         users : action.payload
+      }
+    case FETCH_USERS_FAILURE :
+      return { 
+        ... state,
+        error : action.payload,
+      }
+
+
+      case UPDATE_TASK_SUCCESS:
+        return {
+          ...state,
+          tasks: state.tasks.map((task) =>
+            task.id === action.payload.id ? action.payload : task
+          ), // Update the task in the state
+        };
+  
+      case UPDATE_TASK_FAILURE:
+        return {
+          ...state,
+          error: action.payload,
+        };
+
+
       case 'UPDATE_SELECTED_TASK':
         return {
             ...state,

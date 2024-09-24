@@ -3,6 +3,7 @@ export const FETCH = "FETCH";
 export const UPDATE = "UPDATE";
  export const REGISTER_USER = 'REGISTER_USER';
  export const LOGIN_USER = 'LOGIN_USER';
+ export const ADD_USER = 'ADD_USER'
 
 
 
@@ -13,3 +14,6 @@ export const UPDATE = "UPDATE";
 
  export const UPDATE_SELECTED_TASK = 'UPDATE_SELECTED_TASK';
 export const GET_TASK = 'GET_TASK';
+// export const FETCH_USERS_REQUEST = 'FETCH_USERS_REQUEST';
+// export const FETCH_USERS_SUCCESS = 'FETCH_USERS_SUCCESS';
+// export const FETCH_USERS_FAILURE = 'FETCH_USERS_FAILURE';

@@ -19,21 +19,21 @@ import UserTable from "./User";
 const RightSide = ({tasks,filter,searchQuery,viewMode, users,hideHeader,showHeader,
 selectedTask,setSelectedTask,
 }) => {
-  console.log("vivek", filter);
+  console.log("vivek===>", filter,tasks);
   const [currentPage, setCurrentPage] = useState(1);
 
   const itemsPerPage = viewMode === "grid" ? 3 : 15;
   console.log("task", tasks);
 
   const filteredTasks = tasks.filter((task) => {
-    const query = searchQuery.toLowerCase();
+    const query = searchQuery ?.toLowerCase();
     console.log("v1", query);
     const matchesSearchQuery =
-      task.task_title.toLowerCase().includes(query) ||
-      task.priority.toLowerCase().includes(query) ||
-      task.status.toLowerCase().includes(query) ||
-      task.assign_date.toLowerCase().includes(query) ||
-      task.due_date.toLowerCase().includes(query);
+      task.task_title?.toLowerCase().includes(query) ||
+      task.priority ?.toLowerCase().includes(query) ||
+      task.status ?.toLowerCase().includes(query) ||
+      task.assign_date ?.toLowerCase().includes(query) ||
+      task.due_date ?.toLowerCase().includes(query);
 
     if (!searchQuery) {
       if (filter === "home") return true;
@@ -65,7 +65,7 @@ selectedTask,setSelectedTask,
 
   const renderTasksByStatus = (status) => {
     const tasksByStatus = filteredTasks.filter(
-      (task) => task.status.toLowerCase() === status.toLowerCase()
+      (task) => task.status ?.toLowerCase() === status.toLowerCase()
     );
     console.log("renderTasksByStatus", tasksByStatus, filteredTasks);
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -203,7 +203,7 @@ const len4 = renderTasksByStatus("InDevReview").length;
 
 const countTasksByStatus = (status) => {
   return filteredTasks.filter(
-    (task) => task.status.toLowerCase() === status.toLowerCase()
+    (task) => task.status?.toLowerCase() === status.toLowerCase()
   ).length;
 };
 

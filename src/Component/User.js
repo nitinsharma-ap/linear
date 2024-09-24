@@ -51,11 +51,7 @@ const UserTable = ({ users, theme }) => {
                dataIndex: 'email',
                key: 'email',
              },
-              {
-               title: 'Password',
-               dataIndex: 'password',
-               key: 'password',
-             },
+              
              {
                title: 'Position',
                dataIndex: 'position',

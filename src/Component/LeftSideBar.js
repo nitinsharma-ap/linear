@@ -10,6 +10,9 @@ import useDarkMode from "../Dark/useDarkMode";
 import "./leftSide.css";
 import { MdSupportAgent } from "react-icons/md";
 import { CgDarkMode } from "react-icons/cg";
+import { useDispatch } from "react-redux";
+import { fetchUsersRequest } from "../Redux/Action/action";
+// import { fetchUsersRequest } from ".//";
 
 function LeftSideBar({
   userVal,
@@ -20,6 +23,11 @@ function LeftSideBar({
 }) {
   const [theme, toggleTheme] = useDarkMode("");
   const [current, setCurrent] = useState("home");
+  console.log("uers11",userVal);
+  const dispatch = useDispatch();
+  // const id  = localStorage.getItem('user')
+  
+  
 
   const items = [
     {
@@ -51,6 +59,12 @@ function LeftSideBar({
 
   const onClick = (e) => {
     setCurrent(e.key);
+    
+    if (e.key === "users") {
+      console.log("E.k",e.key);
+
+      dispatch( fetchUsersRequest()); 
+    }
     if (onFilterChange) {
       onFilterChange(e.key);
     }
@@ -68,16 +82,16 @@ function LeftSideBar({
             <div className="userSection">
               <div className="userPhoto">
                 <div className="icon">
-                  {userVal.photo ? (
+                  {/* {userVal.photo ? (
                     <img src={userVal.photo} alt="User Avatar" className="userAvatar" />
                   ) : (
                     <img src="./ic.png" alt="Default Avatar" className="userAvatar" />
-                  )}
+                  )} */}
                   <span className="livePoint"></span>
                 </div>
                 <div className="username">
                   {(
-                    userVal.name || `${userVal.FirstName} ${userVal.LastName}`
+                    userVal || `${userVal.FirstName} ${userVal.LastName}`
                   ).toUpperCase()}
                 </div>
               </div>
@@ -127,7 +141,7 @@ function LeftSideBar({
             </div>
             <div className="username">
               {(
-                userVal.name || `${userVal.FirstName} ${userVal.LastName}`
+                userVal || `${userVal.FirstName} ${userVal.LastName}`
               ).toUpperCase()}
             </div>
           </div>

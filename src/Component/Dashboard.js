@@ -10,7 +10,7 @@ import RightSide from './RightSide';
 import NewTask from './newTask';
 import logo from '../image/logo.png';
 import { Header } from 'antd/es/layout/layout';
-import { showData } from "../Redux/Action/action";
+import { fetchUsersRequest, showData } from "../Redux/Action/action";
 import { fetchTasksRequest, addTask, editTask } from '../Redux/Action/action';
 import { IoGridOutline } from "react-icons/io5";
 import { CiCircleList } from "react-icons/ci";
@@ -30,9 +30,11 @@ function Dashboard() {
   const [selectedTask, setSelectedTask] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const users = useSelector((state) => state.subReducer.tasks);
+  const users = useSelector((state) => state.tasksReducer.users);
+  console.log("nitinUsers===>",users);
+  
   const tasks = useSelector((state) => state.tasksReducer.tasks);
-  console.log("Nisha",tasks);
+  console.log("tasks====>",tasks);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -40,19 +42,35 @@ function Dashboard() {
   useEffect(() => {
     setLoading(true);
     const fetchData = async () => {
-      dispatch(fetchTasksRequest());
-      if (!users.length) {
-       dispatch(showData());
-      }
+      
+      dispatch(showData())
+     
       setTimeout(() => {
         setLoading(false);
       }, 2000);
     };
     fetchData();
   }, [dispatch]);
+  
 
-  const userVal = JSON.parse(localStorage.getItem('user'));
-  console.log("a",userVal);
+
+  // useEffect(() => {
+  //   if (filter === "users") {
+  //     setLoading(true); // Show loading spinner
+  //     dispatch(fetchUsersRequest()); // Dispatch fetch action
+  //   }
+  // }, [dispatch, filter]);
+
+  // useEffect(() => {
+  //   if (users.length > 0) {
+  //     setLoading(false); // Hide loading spinner once data is fetched
+  //   }
+  // }, [users]);
+
+
+  const userVal1 = JSON.parse(localStorage.getItem('user'));
+  console.log("userVal====>",userVal1.user['name'],userVal1);
+  const userVal = userVal1.user['name'];
 
   const handleLogout = async () => {
     await Promise.resolve();
@@ -64,14 +82,17 @@ function Dashboard() {
     setEditingTask(null);
     setIsModalOpen(true);
     setIsMenuVisible(false);
+    dispatch( fetchUsersRequest());
+    
   };
 
   const handleOk = (newTask) => {
-    if (editingTask) {
-      dispatch(editTask({ ...newTask, key: editingTask.key }));
-    } else {
-      dispatch(addTask({ ...newTask, key: tasks.length }));
-    }
+    // if (editingTask) {
+    //   dispatch(editTask({ ...newTask, key: editingTask.key }));
+    // } else {
+    //   dispatch(addTask({ ...newTask, key: tasks.length }));
+    // }
+    dispatch(addTask({ ...newTask, key: tasks.length }));
     setIsModalOpen(false);
   };
 

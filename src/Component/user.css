@@ -1,12 +1,13 @@
 .user-table-container{
      height: 100%;
-     width: 100%;
-     /* border: 2px solid black; */
+     width: 98%;    /* border: 2px solid black; */
 }
 .user-table-container h2{
      margin-top:5px;
 }
 .custom-table{
+     margin-top: 1rem !important;
+   
     height: 80vh;
 }
 .u{
