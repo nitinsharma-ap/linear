@@ -3,6 +3,7 @@
 
 import { FETCH, SHOW, UPDATE ,REGISTER_USER,LOGIN_USER} from "./constant";
 import  {UPDATE_SELECTED_TASK } from './constant'
+import { ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE } from './constant';
 // import { FETCH_TASKS_REQUEST, FETCH_TASKS_SUCCESS, FETCH_TASKS_FAILURE } from './constant';
 export const ADD_USER = 'ADD_USER'
 
@@ -145,6 +146,7 @@ export const deleteTask = (taskId) => ({
 export const UPDATE_TASK = "UPDATE_TASK";
 export const  UPDATE_TASK_SUCCESS = "UPDATE_TASK_SUCCESS";
 export const UPDATE_TASK_FAILURE = "UPDATE_TASK_FAILURE";
+// export const UPDATE_SELECTED_TASK = "UPDATE_SELECTED_TASK";
 
 
 export const updateTask = (id, updatedTaskData) => ({
@@ -168,10 +170,38 @@ export const updateTaskFailure = (error) => ({
 export const updateSelectedTask = (taskId, updatedFields) => {
   console.log("=====>",updatedFields)
   return {
-      type: 'UPDATE_SELECTED_TASK',
+      type: UPDATE_SELECTED_TASK,
       payload: { taskId, updatedFields},
   };
 };
+// actionTypes.js
+// actions.js
+
+// Action to trigger saga for adding a comment
+export const addCommentRequest = (taskId, comment) => {
+  console.log("addCommentRequest==>",taskId, comment);
+  
+
+  return {
+    type: ADD_COMMENT_REQUEST,
+    payload: { taskId, comment},
+
+  }
+};
+
+// Success action when the comment is successfully added
+export const addCommentSuccess = (taskId, comment) => ({
+  type: ADD_COMMENT_SUCCESS,
+  payload: { taskId, comment},
+});
+
+// Failure action if adding a comment fails
+export const addCommentFailure = error => ({
+  type: ADD_COMMENT_FAILURE,
+  payload: error,
+});
+
+
 
 
 

@@ -29,6 +29,9 @@ function Dashboard() {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [selectedTask, setSelectedTask] = useState(null);
   const [loading, setLoading] = useState(false);
+  
+  const [localTasks, setLocalTasks] = useState([]);
+
 
   const users = useSelector((state) => state.tasksReducer.users);
   console.log("nitinUsers===>",users);
@@ -51,6 +54,11 @@ function Dashboard() {
     };
     fetchData();
   }, [dispatch]);
+
+  useEffect(() => {
+    setLocalTasks(tasks);  // Sync local tasks with Redux state
+  }, [tasks]);
+  
   
 
 
@@ -69,8 +77,8 @@ function Dashboard() {
 
 
   const userVal1 = JSON.parse(localStorage.getItem('user'));
-  console.log("userVal====>",userVal1.user['name'],userVal1);
-  const userVal = userVal1.user['name'];
+  console.log("userVal====>",userVal1.name);
+  const userVal = userVal1.user?.name ?? userVal1.name;
 
   const handleLogout = async () => {
     await Promise.resolve();
@@ -85,16 +93,18 @@ function Dashboard() {
     dispatch( fetchUsersRequest());
     
   };
-
   const handleOk = (newTask) => {
-    // if (editingTask) {
-    //   dispatch(editTask({ ...newTask, key: editingTask.key }));
-    // } else {
-    //   dispatch(addTask({ ...newTask, key: tasks.length }));
-    // }
+    const updatedTasks = [...localTasks, { ...newTask, key: tasks.length }];
+    
+    // Update the local tasks array
+    setLocalTasks(updatedTasks);
+  
+    // Dispatch Redux action to save it globally
     dispatch(addTask({ ...newTask, key: tasks.length }));
+  
     setIsModalOpen(false);
   };
+  
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -218,7 +228,7 @@ function Dashboard() {
             editingTask={editingTask}
           />
           <RightSide
-            tasks={tasks}
+            tasks={localTasks.length > 0 ? localTasks : tasks}
             filter={filter}
             searchQuery={searchQuery}
             viewMode={viewMode}

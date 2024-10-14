@@ -1,43 +1,12 @@
-// // src/sagas/tasks.js
-
-
-// import { call, put, takeEvery } from 'redux-saga/effects';
-// import axios from 'axios';
-// import {FETCH_TASKS_REQUEST} from "../Action/constant"
-
-
-// import {fetchTasksSuccess,fetchTasksFailure} from '../Action/action';
-
-
-// function* fetchTasksSaga() {
-//       console.log("nitinNisha");
-//   try {
-//     const response = yield call(axios.get,"https://nitinsharma078.github.io/Default_Data/data.json");
-//     console.log("nitinNisha",response);
-//     // Adjust the path as needed
-//     yield put(fetchTasksSuccess(response.data.task));
-//   } catch (error) {
-//     yield put(fetchTasksFailure(error.message));
-//   }
-// }
-
-// function* tasksSaga() {
-//   yield takeEvery(FETCH_TASKS_REQUEST, fetchTasksSaga);
-
-// }
-
-// export default tasksSaga;
 
 import { call, put, takeEvery } from 'redux-saga/effects';
 import axios from 'axios';
-import {FETCH_TASKS_REQUEST, SHOW} from "../Action/constant"
+import {ADD_COMMENT_REQUEST, FETCH_TASKS_REQUEST, SHOW} from "../Action/constant"
 import { message } from 'antd';
 
+import {fetchTasksSuccess,fetchTasksFailure, ADD_TASK, createTaskSuccess, createTaskFailure, FETCH_USERS_REQUEST, fetchUsersSuccess, fetchUsersFailure, updateSelectedTask, updateTaskSuccess, addCommentSuccess, addCommentFailure} from '../Action/action';
 
-import {fetchTasksSuccess,fetchTasksFailure, ADD_TASK, createTaskSuccess, createTaskFailure, FETCH_USERS_REQUEST, fetchUsersSuccess, fetchUsersFailure} from '../Action/action';
-
-import {UPDATE_TASK,UPDATE_TASK_SUCCESS,UPDATE_TASK_FAILURE } from "../Action/action"
-import { updateSelectedTask,} from "../Redux/Action/action"
+import {UPDATE_TASK,UPDATE_TASK_FAILURE } from "../Action/action"
 
 //
 function* createTasksSaga(action) {
@@ -77,7 +46,7 @@ function* createTasksSaga(action) {
 function*showAllTask(){
   console.log("nitinNisha");
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('access_token');
       const response = yield call(axios.get,"http://localhost:3000/tasks",
         {headers: {
           'Content-Type': 'application/json',
@@ -91,12 +60,12 @@ function*showAllTask(){
       yield put(fetchTasksFailure(error.message));
     }
   }
-  function* allUsers(){
+function* allUsers(){
     console.log("==========>");
-    
     try {
-      const token = localStorage.getItem('token');
-      const response = yield call(axios.get,"http://localhost:3000/users",
+      const token = localStorage.getItem('access_token');
+      console.log('token=======>',token);
+      const response = yield call(axios.get,"http://localhost:3000/api/v1/users",
         {headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, 
@@ -130,10 +99,10 @@ function*showAllTask(){
         },
       });
   
-      yield put('UPDATE_TASK_SUCCESS'(response.data));
+      yield put(updateTaskSuccess(response.data));
 
       // Trigger frontend update with the response from the backend
-      yield put(UPDATE_SELECTED_TASK(id, response.data));
+      yield put(updateSelectedTask(id, response.data));
       message.success('Task updated successfully');
     } catch (error) {
       if (error.response?.status === 404) {
@@ -144,12 +113,87 @@ function*showAllTask(){
       yield put(UPDATE_TASK_FAILURE(error.message));
     }
   }
+
+
+  // function* addCommentSaga(action) {
+  //   console.log("addCommentSaga===>",action.payload);
+    
+  //   try {
+  //     const { taskId, comment} = action.payload;
+  //   console.log("taskId====>",comment.comments);
+    
+  //     const token = localStorage.getItem('token');
+      
+  //     // Prepare the data for the request
+  //     const formData = new FormData();
+  //     // formData.append('comment[text]', commentText);
+  //     // formData.append('comment[image]', imageFile);
+      
+  //     // if (image) {
+  //     //   formData.append('image', image);  // Append the image if available
+  //     // }
+      
+  //     // Make the POST request to add a comment with an image
+  //     const response = yield call(axios.post, `http://localhost:3000/tasks/${taskId}/comments`, formData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //         'Authorization': `Bearer ${token}`,
+  //       },
+  //     });
+      
+  //     // Dispatch success action with response data
+  //     yield put(addCommentSuccess(taskId, response.data.comment, response.data.image));
+      
+  //   } catch (error) {
+  //     // Dispatch failure action with error message
+  //     yield put(addCommentFailure(error.message));
+  //   }
+  // }
+  function* addCommentSaga(action) {
+    console.log("addCommentSaga===>", action.payload);
+  
+    try {
+        const { taskId, comment } = action.payload;
+        console.log("taskId====>", taskId, "Comment====>", comment);
+  
+        const token = localStorage.getItem('token');
+  
+        // Prepare the data for the request
+        const payload = {
+            comments: comment.comments.map((commentItem) => ({
+                text: commentItem.text,
+                images: commentItem.images || [] // Include images if they exist
+            })),
+        };
+
+        console.log("Payload===>", payload, comment.comments.text);
+      
+        // Make the POST request to add a comment with an image
+        const response = yield call(axios.post, `http://localhost:3000/tasks/${taskId}/comments`, comment.comments.text, {
+            headers: {
+                'Content-Type': 'application/json', // Set content type to JSON
+                'Authorization': `Bearer ${token}`, // Include token for authorization
+            },
+        });
+  
+        console.log("response",response);
+        
+        // Dispatch success action with response data
+        yield put(addCommentSuccess(taskId, response.data.comment, response.data.image));
+  
+    } catch (error) {
+        // Dispatch failure action with error message
+        yield put(addCommentFailure(error.message));
+    }
+}
+  
 function* tasksSaga() {
   // yield takeEvery(FETCH_TASKS_REQUEST, fetchTasksSaga);
   yield takeEvery(ADD_TASK, createTasksSaga);
   yield takeEvery(SHOW, showAllTask);
   yield takeEvery(FETCH_USERS_REQUEST,allUsers);
   yield takeEvery(UPDATE_TASK,updateTask);
+  yield takeEvery(ADD_COMMENT_REQUEST, addCommentSaga);
 
 }
 

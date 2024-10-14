@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiSolidUserCircle } from "react-icons/bi";
 import {
   Button,
@@ -13,7 +13,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { SiGoogletasks } from "react-icons/si";
 import "./Task.css";
 import { useDispatch, useSelector } from "react-redux";
-import { updateSelectedTask, updateTask } from "../Redux/Action/action";
+import { addCommentRequest, fetchUsersRequest, updateSelectedTask, updateTask } from "../Redux/Action/action";
 
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDeleteSweep } from "react-icons/md";
@@ -32,9 +32,14 @@ const { Option } = Select;
 
 const Task = ({ task, handleBackToList }) => {
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.subReducer.tasks);
-  const [comments, setComments] = useState(task?.comments || []);
-
+  const [comments, setComments] = useState(task?.comments || [])
+  // useEffect(()=>{
+  //   dispatch( fetchUsersRequest());
+  // },[dispatch])
+                       
+const users = useSelector((state) => state.tasksReducer.users);
+  // console.log("nitinUsers===>",users);
+  
   const data1 = useSelector((state) => state.tasksReducer.tasks);
   console.log("d",users, data1);
   const [comment, setComment] = useState("");
@@ -52,6 +57,8 @@ const Task = ({ task, handleBackToList }) => {
     assignedUser: false,
   });
   const userVal = JSON.parse(localStorage.getItem('user'));
+  console.log("userVal===>",userVal,userVal.name);
+  
 
   const [initialValues] = useState({
     task_title: task?.task_title || "",
@@ -81,6 +88,7 @@ const Task = ({ task, handleBackToList }) => {
   };
 
   const handleSelectChange = (value, field) => {
+    // dispatch(fetchUsersRequest()); 
     setEditedValues({ ...editedValues, [field]: value });
   };
 
@@ -120,7 +128,8 @@ const Task = ({ task, handleBackToList }) => {
     };
 
     // Dispatch the action to update the task in Redux
-    dispatch(updateSelectedTask(task.id, updatedFields));
+    // dispatch(updateSelectedTask(task.id, updatedFields));
+    dispatch(addCommentRequest(task.id, updatedFields));
 
 
     // Clear the input fields
@@ -465,7 +474,7 @@ const Task = ({ task, handleBackToList }) => {
               <img src="./ic.png"  className="comments-logo"/>
                 <span className="livePoint1"></span>
                 </div>
-                <p> {userVal.email.replace("@gmail.com","")}</p>
+                <p> {userVal.name}</p>
                 </div>
 
 
@@ -629,7 +638,7 @@ const Task = ({ task, handleBackToList }) => {
               placeholder="Assignee"
               onChange={(value) => handleSelectChange(value, "assignedUser")}
             >
-              {users.map((user) => (
+              {users  && users.map((user) => (
                 <Option key={user.name} value={user.name}>
                   {user.name}
                 </Option>

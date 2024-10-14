@@ -11,19 +11,21 @@ import {
   FETCH_USERS_REQUEST,
   UPDATE_TASK_SUCCESS,
   UPDATE_TASK_FAILURE,
+
 } from '../Action/action';
-import {UPDATE_SELECTED_TASK} from '../Action/constant';
+import { UPDATE_SELECTED_TASK } from '../Action/constant';
+import { ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE } from '../Action/constant';
 const initialState = {
   tasks: [],
   error: null,
-  users :[]
+  users: []
 };
 
 const tasksReducer = (state = initialState, action) => {
   // console.log("==>",action.payload.updatedFields );
   switch (action.type) {
     // Add the new task to the tasks array
-     
+
     case FETCH_TASKS_SUCCESS:
       return {
         ...state,
@@ -40,14 +42,19 @@ const tasksReducer = (state = initialState, action) => {
     //     ...state,
     //     tasks: [ action.payload , ...state.tasks],
     //   };
-      case  ADD_TASK:
-      return { ...state};
+    case ADD_TASK:
+      return { ...state };
 
     case CREATE_TASK_SUCCESS:
-      return { ...state, 
-         tasks: [...state.tasks, action.payload] };
+      return {
+        ...state,
+        tasks: [action.payload , ...state.tasks]
+      };
+
     case CREATE_TASK_FAILURE:
+
       return { ...state, error: action.payload };
+      
     case EDIT_TASK:
       return {
         ...state,
@@ -57,50 +64,73 @@ const tasksReducer = (state = initialState, action) => {
       };
     case FETCH_USERS_REQUEST:
       return {
-        ... state
+        ...state
       }
     case FETCH_USERS_SUCCESS:
       return {
-         ... state,
-         users : action.payload
+        ...state,
+        users: action.payload
       }
-    case FETCH_USERS_FAILURE :
-      return { 
-        ... state,
-        error : action.payload,
+    case FETCH_USERS_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
       }
 
 
-      case UPDATE_TASK_SUCCESS:
-        return {
-          ...state,
-          tasks: state.tasks.map((task) =>
-            task.id === action.payload.id ? action.payload : task
-          ), // Update the task in the state
-        };
-  
-      case UPDATE_TASK_FAILURE:
-        return {
-          ...state,
-          error: action.payload,
-        };
+    case UPDATE_TASK_SUCCESS:
+      return {
+        ...state,
+        tasks: state.tasks.map((task) =>
+          task.id === action.payload.id ? action.payload : task
+        ), // Update the task in the state
+      };
+
+    case UPDATE_TASK_FAILURE:
+      return {
+        ...state,
+        error: action.payload,
+      };
 
 
-      case 'UPDATE_SELECTED_TASK':
-        return {
-            ...state,
-            tasks: state.tasks.map(task =>
-                task.id === action.payload.taskId ? { ...task, ...action.payload.updatedFields } : task
-            ),
-        };
+    case 'UPDATE_SELECTED_TASK':
+      return {
+        ...state,
+        tasks: state.tasks.map(task =>
+          task.id === action.payload.taskId ? { ...task, ...action.payload.updatedFields } : task
+        ),
+      };
     case DELETE_TASK:
       return {
         ...state,
         tasks: state.tasks.filter((task) => task.key !== action.payload),
       };
+
+
+      case ADD_COMMENT_SUCCESS:
+        return {
+          ...state,
+          tasks: state.tasks.map(task =>
+            task.id === action.payload.taskId
+              ? {
+                  ...task,
+                  comments: [...task.comments, { 
+                    comment: action.payload.comment, 
+                    image: action.payload.image 
+                  }],
+                }
+              : task
+          ),
+        };
+      case ADD_COMMENT_FAILURE:
+        return {
+          ...state,
+          error: action.payload,
+        };
     default:
       return state;
   }
 };
+
 
 export default tasksReducer;
