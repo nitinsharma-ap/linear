@@ -33,10 +33,13 @@ function Dashboard() {
   const [localTasks, setLocalTasks] = useState([]);
 
 
-  const users = useSelector((state) => state.tasksReducer.users);
-  console.log("nitinUsers===>",users);
+  const usersVal = useSelector((state) => state.tasksReducer.users) || [];
+  const users =  usersVal.users;
+  console.log("nitinUsers===>",users,usersVal);
   
-  const tasks = useSelector((state) => state.tasksReducer.tasks);
+  const tasks  = useSelector((state) => state.tasksReducer.tasks);
+  
+
   console.log("tasks====>",tasks);
 
   const navigate = useNavigate();
@@ -59,21 +62,9 @@ function Dashboard() {
     setLocalTasks(tasks);  // Sync local tasks with Redux state
   }, [tasks]);
   
-  
-
-
-  // useEffect(() => {
-  //   if (filter === "users") {
-  //     setLoading(true); // Show loading spinner
-  //     dispatch(fetchUsersRequest()); // Dispatch fetch action
-  //   }
-  // }, [dispatch, filter]);
-
-  // useEffect(() => {
-  //   if (users.length > 0) {
-  //     setLoading(false); // Hide loading spinner once data is fetched
-  //   }
-  // }, [users]);
+  useEffect(()=>{
+    dispatch( fetchUsersRequest());
+  },[dispatch])
 
 
   const userVal1 = JSON.parse(localStorage.getItem('user'));
@@ -90,7 +81,7 @@ function Dashboard() {
     setEditingTask(null);
     setIsModalOpen(true);
     setIsMenuVisible(false);
-    dispatch( fetchUsersRequest());
+    // dispatch( fetchUsersRequest());
     
   };
   const handleOk = (newTask) => {
@@ -228,7 +219,7 @@ function Dashboard() {
             editingTask={editingTask}
           />
           <RightSide
-            tasks={localTasks.length > 0 ? localTasks : tasks}
+            tasks={localTasks ? localTasks : tasks}
             filter={filter}
             searchQuery={searchQuery}
             viewMode={viewMode}

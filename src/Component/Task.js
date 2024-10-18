@@ -30,15 +30,15 @@ const { TextArea } = Input;
 
 const { Option } = Select;
 
-const Task = ({ task, handleBackToList }) => {
+const Task = ({ task, handleBackToList ,users}) => {
   const dispatch = useDispatch();
   const [comments, setComments] = useState(task?.comments || [])
   // useEffect(()=>{
   //   dispatch( fetchUsersRequest());
   // },[dispatch])
                        
-const users = useSelector((state) => state.tasksReducer.users);
-  // console.log("nitinUsers===>",users);
+// const users = useSelector((state) => state.tasksReducer.users);
+  console.log("nitinUsers111===>",users,task);
   
   const data1 = useSelector((state) => state.tasksReducer.tasks);
   console.log("d",users, data1);
@@ -67,8 +67,12 @@ const users = useSelector((state) => state.tasksReducer.users);
     due_date: task?.due_date || null,
     priority: task?.priority || "",
     status: task?.status || "",
-    assignedUser: task?.assignedUser || "",
+    assignedUser:
+    (users && users.find((user) => user.id === task?.assigned_user_id)?.name) ||
+    "",
   });
+  console.log("intinalValue====>",initialValues,);
+  
 
   const [editedValues, setEditedValues] = useState({ ...initialValues });
   const uniquePriorities = [...new Set(data1.map((option) => option.priority))];
@@ -123,7 +127,7 @@ const users = useSelector((state) => state.tasksReducer.users);
 
     // Prepare updated fields
     const updatedFields = {
-      ...editedValues,
+      // ...editedValues,
       comments: updatedComments,
     };
 
@@ -162,12 +166,12 @@ const users = useSelector((state) => state.tasksReducer.users);
         : comment
     );
     setComments(updatedComments);
-    dispatch(
-      updateSelectedTask(task.id, {
-        ...editedValues,
-        comments: updatedComments,
-      })
-    );
+    // dispatch(
+    //   updateSelectedTask(task.id, {
+    //     ...editedValues,
+    //     comments: updatedComments,
+    //   })
+    // );
     setEditingCommentIndex(null);
     setEditedCommentText("");
     setEditedCommentImages([]);
@@ -176,12 +180,12 @@ const users = useSelector((state) => state.tasksReducer.users);
   const handleDeleteComment = (index) => {
     const updatedComments = comments.filter((_, i) => i !== index);
     setComments(updatedComments);
-    dispatch(
-      updateSelectedTask(task.id, {
-        ...editedValues,
-        comments: updatedComments,
-      })
-    );
+    // dispatch(
+    //   updateSelectedTask(task.id, {
+    //     ...editedValues,
+    //     comments: updatedComments,
+    //   })
+    // );
   };
 
   const handleDeleteImage = (commentIndex, imageIndex) => {
@@ -196,12 +200,12 @@ const users = useSelector((state) => state.tasksReducer.users);
       return comment;
     });
     setComments(updatedComments);
-    dispatch(
-      updateSelectedTask(task.id, {
-        ...editedValues,
-        comments: updatedComments,
-      })
-    );
+    // dispatch(
+    //   updateSelectedTask(task.id, {
+    //     ...editedValues,
+    //     comments: updatedComments,
+    //   })
+    // );
   };
 
   const handleCancelEditComment = () => {
@@ -251,10 +255,10 @@ const users = useSelector((state) => state.tasksReducer.users);
     if (comments !== task.comments) {
       updatedFields.comments = serializedComments;
     }
-      dispatch(updateTask(task.id,updatedFields))
+      dispatch(updateTask(task.id,updatedFields,task.assigned_user_id))
     // dispatch(updateSelectedTask(task.id, updatedFields));
 
-    message.success("  save data success");
+    // message.success("  save data success");
     handleBackToList();
   };
 
@@ -263,8 +267,9 @@ const users = useSelector((state) => state.tasksReducer.users);
   }
 
   const assignedUserName =
-    (users && users.find((user) => user.name === task.assignedUser)?.name) ||
+    (users && users.find((user) => user.id === task.assigned_user_id)?.name) ||
     "Unknown User";
+console.log("assignedUserName====>",assignedUserName);
 
   return (
     <div className="task">
@@ -354,7 +359,7 @@ const users = useSelector((state) => state.tasksReducer.users);
                 {editMode.assignedUser ? (
                   <Select
                     showSearch
-                    value={editedValues.assignedUser}
+                    value={editedValues.assignedUser }
                     style={{ width: "auto" }}
                     onChange={(value) =>
                       handleSelectChange(value, "assignedUser")
@@ -639,7 +644,7 @@ const users = useSelector((state) => state.tasksReducer.users);
               onChange={(value) => handleSelectChange(value, "assignedUser")}
             >
               {users  && users.map((user) => (
-                <Option key={user.name} value={user.name}>
+                <Option key={user.id} value={user.name}>
                   {user.name}
                 </Option>
               ))}

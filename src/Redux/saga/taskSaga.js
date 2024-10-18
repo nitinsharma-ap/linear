@@ -11,51 +11,57 @@ import {UPDATE_TASK,UPDATE_TASK_FAILURE } from "../Action/action"
 //
 function* createTasksSaga(action) {
   try {
-    const token = localStorage.getItem('token');
-    const user = JSON.parse(localStorage.getItem('user'));
-  // console.log("logg==>",token,user.user["id"]);
-  
-    const user_id = user.user['id'];
+    const token = localStorage.getItem('access_token');
+    // const user = JSON.parse(localStorage.getItem('user'));
+    
+    const assigned_user_id = action.payload && action.payload.UserID;
     const project_id = 1; // Adjust as needed
 
+    console.log("assigned_user_id=>",assigned_user_id,action);
+    
+    
     const payloadWithUserAndProject = {
       task: { ...action.payload },
-      user_id,
+      assigned_user_id,
       project_id
     };
-
+    
     // API call to create task
-    const response = yield call(axios.post, 'http://localhost:3000/tasks', payloadWithUserAndProject, {
+    const response = yield call(axios.post, 'http://localhost:3000/api/v1/tasks', payloadWithUserAndProject, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },
     });
-
-    // On successful task creation, update the frontend state
-    yield put(createTaskSuccess(response.data)); // This will update Redux state
+    console.log("loggcre==>",response,response.data.task,typeof(response.data));
+      
+    
+    yield put(createTaskSuccess(
+      response.data.task)); 
 
     // Show success message
-    message.success('Task created successfully');
+    message.success('Task successfully');
   } catch (error) {
+    console.log("errror====>",error);
+    
     // On error, handle it and show an error message
     yield put(createTaskFailure(error.message));
-    message.error('Failed to create task');
+    message.error('Failed');
   }
 }
 function*showAllTask(){
   console.log("nitinNisha");
     try {
       const token = localStorage.getItem('access_token');
-      const response = yield call(axios.get,"http://localhost:3000/tasks",
+      const response = yield call(axios.get,"http://localhost:3000/api/v1/tasks",
         {headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, 
         },
     });
-      console.log("nitinNisha===>",response.data);
+      console.log("nitinNisha===>",response.data.tasks);
       // Adjust the path as needed
-      yield put(fetchTasksSuccess(response.data));
+      yield put(fetchTasksSuccess(response.data.tasks));
     } catch (error) {
       yield put(fetchTasksFailure(error.message));
     }
@@ -79,30 +85,37 @@ function* allUsers(){
     }
 
   }
-
-
-
-
   function* updateTask(action) {
     // console.log("update====>",action);
     
-    const { id, updatedTaskData } = action.payload;
-  
+    
+    
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('access_token');
+      const { id, updatedTaskData ,assigned_user_id} = action.payload;
+      console.log("updatedTaskData==>",action.payload,updatedTaskData);
+      
+      const project_id = 1;
+      const payloadWithUpdateProject = {
+        task: {...updatedTaskData},
+        assigned_user_id,
+        project_id
+      };
   
       // API request to update the task
-      const response = yield call(axios.put, `http://localhost:3000/tasks/${id}`, updatedTaskData, {
+      const response = yield call(axios.put, `http://localhost:3000/api/v1/tasks/${id}`, payloadWithUpdateProject , {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
       });
+      console.log("Update======>",response.data);
+      
   
-      yield put(updateTaskSuccess(response.data));
+      yield put(updateTaskSuccess(response.data.task));
 
       // Trigger frontend update with the response from the backend
-      yield put(updateSelectedTask(id, response.data));
+      // yield put(updateSelectedTask(id, response.data));
       message.success('Task updated successfully');
     } catch (error) {
       if (error.response?.status === 404) {
@@ -151,35 +164,52 @@ function* allUsers(){
   // }
   function* addCommentSaga(action) {
     console.log("addCommentSaga===>", action.payload);
-  
+    
     try {
-        const { taskId, comment } = action.payload;
-        console.log("taskId====>", taskId, "Comment====>", comment);
+      const { taskId, comment } = action.payload;
+      console.log("taskId====>", taskId, "Comment====>", comment);
+      
+      const token = localStorage.getItem('access_token');
   
-        const token = localStorage.getItem('token');
+  //  comment.comments.map((commentItem) => ({
+  //   // console.log("commets==>", commentItem.text)
+  //     text: commentItem.text,
+  //       image: commentItem.images || [] // Include images if they exist
+  //   }))
   
-        // Prepare the data for the request
-        const payload = {
-            comments: comment.comments.map((commentItem) => ({
-                text: commentItem.text,
-                images: commentItem.images || [] // Include images if they exist
-            })),
-        };
+      
+    const payload = {
+      comments: comment.comments.map((commentItem) => ({
+          text: commentItem.text,
+          image: commentItem.images || []
+      })),
+  };
+   console.log("payload===>",payload);
+   
+      //   const payload = {
+      //     comment: {
+      //         comments: comment.comments.map((commentItem) => ({
+                
+      //             text: commentItem.text,
+      //             images: commentItem.images || [] // Include images if they exist
+      //         })),
+      //     },
+      // };
 
-        console.log("Payload===>", payload, comment.comments.text);
+        // console.log("Payload===>", payload, comment.comments);
       
         // Make the POST request to add a comment with an image
-        const response = yield call(axios.post, `http://localhost:3000/tasks/${taskId}/comments`, comment.comments.text, {
+        const response = yield call(axios.post, `http://localhost:3000/api/v1/tasks/${taskId}/comments`,payload,{
             headers: {
                 'Content-Type': 'application/json', // Set content type to JSON
                 'Authorization': `Bearer ${token}`, // Include token for authorization
             },
         });
   
-        console.log("response",response);
+        console.log("response======>",response);
         
         // Dispatch success action with response data
-        yield put(addCommentSuccess(taskId, response.data.comment, response.data.image));
+        // yield put(addCommentSuccess(taskId, response.data.comment, response.data.image));
   
     } catch (error) {
         // Dispatch failure action with error message

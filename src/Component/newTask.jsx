@@ -19,12 +19,14 @@ function NewTask({ isModalOpen, handleOk, handleCancel, users }) {
   const [status, setStatus] = useState('Status');
   const [priority, setPriority] = useState('Priority');
   const [assignedUser, setAssignedUser] = useState('Assign User');
+  const [UserID, setUserID] = useState(null);
+
 
   const onSubmit = () => {
-    if (!taskTitle || !description || !assignDate || !dueDate || status === 'Status' || priority === 'Priority' || !assignedUser) {
-      message.error('Please fill in all fields.');
-      return;
-    }
+    // if (!taskTitle || !description || !assignDate || !dueDate || status === 'Status' || priority === 'Priority' || !assignedUser) {
+    //   message.error('Please fill in all fields.');
+    //   return;
+    // }
 
     const formattedAssignDate = assignDate ? assignDate.format('YYYY-MM-DD') : null;
     const formattedDueDate = dueDate ? dueDate.format('YYYY-MM-DD') : null;
@@ -38,13 +40,16 @@ function NewTask({ isModalOpen, handleOk, handleCancel, users }) {
       due_date: formattedDueDate,
       status,
       priority,
-      assignedUser
-    };
+      assignedUser,
+      UserID,
 
+    };
+ console.log("userId======>",users);
+ 
     // dispatch(createTaskRequest(task)); 
 
     handleOk(task);
-  message.success("You have succuss full add task.")
+  // message.success("You have succuss full add task.")
     setTaskTitle('');
     setDescription('');
     setAssignDate('');
@@ -132,16 +137,24 @@ function NewTask({ isModalOpen, handleOk, handleCancel, users }) {
         </div>
         <div className='modal-admin icon-center'>
         <ImUsers className='icon'/>
-          <Select
-            className='assign-user'
-            placeholder="Select a user"
-            value={assignedUser}
-            onChange={(value) => setAssignedUser(value)}
-          >
-            { users && users.map(user => (
-              <Option key={user.id} value={user.name}>{user.name}</Option>
-            ))}
-          </Select>
+        <Select
+  className="assign-user"
+  placeholder="Select a user"
+  value={assignedUser}
+  onChange={(value, option) => {
+    console.log("nitin===>",value,option.key);
+    
+    setAssignedUser(value);  
+    setUserID(option.key);   
+  }}
+>
+  {users && users.map(user => (
+    <Option key={user.id} value={user.name}>
+      {user.name}
+    </Option>
+  ))}
+</Select>
+
         </div>
       </div>
     </Modal>

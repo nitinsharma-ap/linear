@@ -22,7 +22,7 @@ const initialState = {
 };
 
 const tasksReducer = (state = initialState, action) => {
-  // console.log("==>",action.payload.updatedFields );
+  console.log("tasksReducer ==>",action.payload, state);
   switch (action.type) {
     // Add the new task to the tasks array
 
@@ -48,7 +48,7 @@ const tasksReducer = (state = initialState, action) => {
     case CREATE_TASK_SUCCESS:
       return {
         ...state,
-        tasks: [action.payload , ...state.tasks]
+        tasks: [action.payload, ...state.tasks]
       };
 
     case CREATE_TASK_FAILURE:
@@ -81,9 +81,10 @@ const tasksReducer = (state = initialState, action) => {
     case UPDATE_TASK_SUCCESS:
       return {
         ...state,
-        tasks: state.tasks.map((task) =>
-          task.id === action.payload.id ? action.payload : task
-        ), // Update the task in the state
+        // tasks: state.tasks.map((task) =>
+        //   task.id === action.payload.id ? action.payload : task
+        // ), // Update the task in the state
+        tasks: [action.payload, ...state.tasks]
       };
 
     case UPDATE_TASK_FAILURE:

@@ -6,7 +6,7 @@ import './user.css';
 const { Search } = Input;
 
 const UserTable = ({ users, theme }) => {
-  // console.log("++",users);
+  console.log("++",users);
   const [searchText, setSearchText] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredUsers, setFilteredUsers] = useState(users); // State to hold filtered users

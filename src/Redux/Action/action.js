@@ -121,10 +121,14 @@ export const addTask = (task) => {
   }
 
 };
-export const createTaskSuccess = (task) => ({
+export const createTaskSuccess = (task) => {
+
+  console.log("addTask==> 45",task)
+  return{
   type: CREATE_TASK_SUCCESS,
-  payload: task,
-});
+  payload: task,}
+}
+
 
 export const createTaskFailure = (error) => ({
   type: CREATE_TASK_FAILURE,
@@ -149,9 +153,9 @@ export const UPDATE_TASK_FAILURE = "UPDATE_TASK_FAILURE";
 // export const UPDATE_SELECTED_TASK = "UPDATE_SELECTED_TASK";
 
 
-export const updateTask = (id, updatedTaskData) => ({
+export const updateTask = (id, updatedTaskData,assigned_user_id) => ({
   type: UPDATE_TASK,
-  payload: { id, updatedTaskData },
+  payload: { id, updatedTaskData ,assigned_user_id},
 });
 
 export const updateTaskSuccess = (updatedTask) => ({
@@ -167,13 +171,13 @@ export const updateTaskFailure = (error) => ({
 
 
 
-export const updateSelectedTask = (taskId, updatedFields) => {
-  console.log("=====>",updatedFields)
-  return {
-      type: UPDATE_SELECTED_TASK,
-      payload: { taskId, updatedFields},
-  };
-};
+// export const updateSelectedTask = (taskId, updatedFields) => {
+//   console.log("=====>",updatedFields)
+//   return {
+//       type: UPDATE_SELECTED_TASK,
+//       payload: { taskId, updatedFields},
+//   };
+// };
 // actionTypes.js
 // actions.js
 
