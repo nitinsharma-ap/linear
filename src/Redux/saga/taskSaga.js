@@ -4,7 +4,7 @@ import axios from 'axios';
 import {ADD_COMMENT_REQUEST, FETCH_TASKS_REQUEST, SHOW} from "../Action/constant"
 import { message } from 'antd';
 
-import {fetchTasksSuccess,fetchTasksFailure, ADD_TASK, createTaskSuccess, createTaskFailure, FETCH_USERS_REQUEST, fetchUsersSuccess, fetchUsersFailure, updateSelectedTask, updateTaskSuccess, addCommentSuccess, addCommentFailure} from '../Action/action';
+import {fetchTasksSuccess,fetchTasksFailure, ADD_TASK, createTaskSuccess, createTaskFailure, FETCH_USERS_REQUEST, fetchUsersSuccess, fetchUsersFailure, updateSelectedTask, updateTaskSuccess, addCommentSuccess, addCommentFailure, fetchCommentsRequest, FETCH_COMMENTS_REQUEST, fetchCommentsSuccess, DELETE_TASK_REQUEST, DELETE_COMMENT_REQUEST, deleteCommentSuccess, deleteCommentFailure, EDIT_COMMENT_REQUEST} from '../Action/action';
 
 import {UPDATE_TASK,UPDATE_TASK_FAILURE } from "../Action/action"
 
@@ -27,7 +27,7 @@ function* createTasksSaga(action) {
     };
     
     // API call to create task
-    const response = yield call(axios.post, 'http://localhost:3000/api/v1/tasks', payloadWithUserAndProject, {
+    const response = yield call(axios.post, 'https://mysite-q830.onrender.com/api/v1/tasks', payloadWithUserAndProject, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
@@ -53,7 +53,7 @@ function*showAllTask(){
   console.log("nitinNisha");
     try {
       const token = localStorage.getItem('access_token');
-      const response = yield call(axios.get,"http://localhost:3000/api/v1/tasks",
+      const response = yield call(axios.get,"https://mysite-q830.onrender.com/api/v1/tasks",
         {headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, 
@@ -71,7 +71,7 @@ function* allUsers(){
     try {
       const token = localStorage.getItem('access_token');
       console.log('token=======>',token);
-      const response = yield call(axios.get,"http://localhost:3000/api/v1/users",
+      const response = yield call(axios.get,"https://mysite-q830.onrender.com/api/v1/users",
         {headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, 
@@ -103,7 +103,7 @@ function* allUsers(){
       };
   
       // API request to update the task
-      const response = yield call(axios.put, `http://localhost:3000/api/v1/tasks/${id}`, payloadWithUpdateProject , {
+      const response = yield call(axios.put, `https://mysite-q830.onrender.com/api/v1/tasks/${id}`, payloadWithUpdateProject , {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -128,40 +128,31 @@ function* allUsers(){
   }
 
 
-  // function* addCommentSaga(action) {
-  //   console.log("addCommentSaga===>",action.payload);
+  function* getAllComments(action) {
+    console.log("addCommentSaga===>",action.payload);
     
-  //   try {
-  //     const { taskId, comment} = action.payload;
-  //   console.log("taskId====>",comment.comments);
+    try {
+      const { taskId} = action.payload;
+    // console.log("taskId====>",comment.comments);
     
-  //     const token = localStorage.getItem('token');
+      const token = localStorage.getItem('access_token');
       
-  //     // Prepare the data for the request
-  //     const formData = new FormData();
-  //     // formData.append('comment[text]', commentText);
-  //     // formData.append('comment[image]', imageFile);
+      const response = yield call(axios.get, `http://localhost:3000/api/v1/task/${taskId}/comments`, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+      console.log("response====>",response);
       
-  //     // if (image) {
-  //     //   formData.append('image', image);  // Append the image if available
-  //     // }
+      // Dispatch success action with response data
+      yield put(fetchCommentsSuccess(response.data));
       
-  //     // Make the POST request to add a comment with an image
-  //     const response = yield call(axios.post, `http://localhost:3000/tasks/${taskId}/comments`, formData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //         'Authorization': `Bearer ${token}`,
-  //       },
-  //     });
-      
-  //     // Dispatch success action with response data
-  //     yield put(addCommentSuccess(taskId, response.data.comment, response.data.image));
-      
-  //   } catch (error) {
-  //     // Dispatch failure action with error message
-  //     yield put(addCommentFailure(error.message));
-  //   }
-  // }
+    } catch (error) {
+      // Dispatch failure action with error message
+      yield put(addCommentFailure(error.message));
+    }
+  }
   function* addCommentSaga(action) {
     console.log("addCommentSaga===>", action.payload);
     
@@ -169,15 +160,7 @@ function* allUsers(){
       const { taskId, comment } = action.payload;
       console.log("taskId====>", taskId, "Comment====>", comment);
       
-      const token = localStorage.getItem('access_token');
-  
-  //  comment.comments.map((commentItem) => ({
-  //   // console.log("commets==>", commentItem.text)
-  //     text: commentItem.text,
-  //       image: commentItem.images || [] // Include images if they exist
-  //   }))
-  
-      
+      const token = localStorage.getItem('access_token'); 
     const payload = {
       comments: comment.comments.map((commentItem) => ({
           text: commentItem.text,
@@ -186,19 +169,7 @@ function* allUsers(){
   };
    console.log("payload===>",payload);
    
-      //   const payload = {
-      //     comment: {
-      //         comments: comment.comments.map((commentItem) => ({
-                
-      //             text: commentItem.text,
-      //             images: commentItem.images || [] // Include images if they exist
-      //         })),
-      //     },
-      // };
-
-        // console.log("Payload===>", payload, comment.comments);
-      
-        // Make the POST request to add a comment with an image
+     
         const response = yield call(axios.post, `http://localhost:3000/api/v1/tasks/${taskId}/comments`,payload,{
             headers: {
                 'Content-Type': 'application/json', // Set content type to JSON
@@ -206,15 +177,82 @@ function* allUsers(){
             },
         });
   
-        console.log("response======>",response);
+        console.log("response======>",response.data);
+        message.success('add success')
         
         // Dispatch success action with response data
-        // yield put(addCommentSuccess(taskId, response.data.comment, response.data.image));
+      yield put(addCommentSuccess( response.data));
   
     } catch (error) {
+      message.error('error')
         // Dispatch failure action with error message
-        yield put(addCommentFailure(error.message));
+        // yield put(addCommentFailure(error.message));
     }
+}
+function* deleteCommmentsSaga(action) {
+  
+  try {
+    const token = localStorage.getItem('access_token'); // Get auth token if needed
+    const commentId = action.payload;
+    console.log("Delete===>",action.payload,commentId);
+
+    // API call to delete the task
+    const response = yield call(axios.delete, `http://localhost:3000/api/v1/comments/${commentId}`, {
+      headers: {
+         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    }); 
+
+    console.log("response....",response)
+
+    // Dispatch success action if API call is successful
+    yield put(deleteCommentSuccess(commentId ));
+    message.success('Task deleted successfully'); // Show success message
+
+  } catch (error) {
+    // Dispatch failure action if something goes wrong
+    yield put(deleteCommentFailure(error.message));
+    message.error('Failed to delete task');
+  }
+}
+function* editCommmentsSaga(action) {
+  console.log("action==>",action.payload);
+  try {
+    const token = localStorage.getItem('access_token'); // Get auth token if needed
+    const commentId = action.payload.id;
+    const comments = [action.payload];
+   const comment = {comments}
+   const payload = {
+    comments: comment.comments.map((commentItem) => ({
+        text: commentItem.text,
+        image: commentItem.images || []
+    })),
+};
+    
+    console.log("DeleteText===>",payload);
+
+
+    // API call to delete the task
+    const response = yield call(axios.put, `http://localhost:3000/api/v1/comments/${commentId}`,payload, {
+      headers: {
+         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    }); 
+
+    console.log("response111===>",response)
+
+    // Dispatch success action if API call is successful
+    // yield put(deleteCommentSuccess(commentId ));
+    message.success('Task deleted successfully'); // Show success message
+
+  } catch (error) {
+   
+    console.log("error=====>",error);
+    
+    message.error('Failed to delete task');
+  }
 }
   
 function* tasksSaga() {
@@ -224,7 +262,9 @@ function* tasksSaga() {
   yield takeEvery(FETCH_USERS_REQUEST,allUsers);
   yield takeEvery(UPDATE_TASK,updateTask);
   yield takeEvery(ADD_COMMENT_REQUEST, addCommentSaga);
-
+  yield takeEvery(FETCH_COMMENTS_REQUEST, getAllComments);
+  yield takeEvery(DELETE_COMMENT_REQUEST, deleteCommmentsSaga);
+  yield takeEvery(EDIT_COMMENT_REQUEST, editCommmentsSaga);
 }
 
 export default tasksSaga;

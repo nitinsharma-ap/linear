@@ -15,12 +15,15 @@ import { SlCalender } from "react-icons/sl";
 import { FaUserCircle } from "react-icons/fa";
 import Support from "./Support";
 import UserTable from "./User";
+import { useDispatch } from "react-redux";
+import { fetchCommentsRequest } from "../Redux/Action/action";
 
 const RightSide = ({tasks,filter,searchQuery,viewMode, users,hideHeader,showHeader,
 selectedTask,setSelectedTask,
 }) => {
   console.log("vivek===>",users ,tasks);
   const [currentPage, setCurrentPage] = useState(1);
+ const dispatch = useDispatch();
 
   const itemsPerPage = viewMode === "grid" ? 3 : 15;
   console.log("task", tasks);
@@ -51,7 +54,10 @@ selectedTask,setSelectedTask,
   }) || [];
 
   const handleTaskCardClick = (task) => {
+    // console.log("fetchCommentsRequest==>",task);
+    
     setSelectedTask(task);
+    dispatch(fetchCommentsRequest(task.id))
     hideHeader();
   };
 
@@ -60,9 +66,6 @@ selectedTask,setSelectedTask,
     showHeader();
   };
   console.log("--n", filter);
-
-
-
   const renderTasksByStatus = (status) => {
     const tasksByStatus = filteredTasks.filter(
       (task) => task.status ?.toLowerCase() === status.toLowerCase()

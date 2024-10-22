@@ -11,6 +11,11 @@ import {
   FETCH_USERS_REQUEST,
   UPDATE_TASK_SUCCESS,
   UPDATE_TASK_FAILURE,
+  FETCH_COMMENTS_REQUEST,
+  FETCH_COMMENTS_SUCCESS,
+  FETCH_COMMENTS_FAILURE,
+  DELETE_COMMENT_SUCCESS,
+  DELETE_COMMENT_FAILURE,
 
 } from '../Action/action';
 import { UPDATE_SELECTED_TASK } from '../Action/constant';
@@ -18,11 +23,12 @@ import { ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE } from '../Action/constant';
 const initialState = {
   tasks: [],
   error: null,
-  users: []
+  users: [],
+  comments: [],
 };
 
 const tasksReducer = (state = initialState, action) => {
-  console.log("tasksReducer ==>",action.payload, state);
+  console.log("tasksReducer ==>",action.payload);
   switch (action.type) {
     // Add the new task to the tasks array
 
@@ -52,8 +58,9 @@ const tasksReducer = (state = initialState, action) => {
       };
 
     case CREATE_TASK_FAILURE:
-
-      return { ...state, error: action.payload };
+      return { ...state,
+         error: action.payload 
+        };
       
     case EDIT_TASK:
       return {
@@ -81,12 +88,11 @@ const tasksReducer = (state = initialState, action) => {
     case UPDATE_TASK_SUCCESS:
       return {
         ...state,
-        // tasks: state.tasks.map((task) =>
-        //   task.id === action.payload.id ? action.payload : task
-        // ), // Update the task in the state
-        tasks: [action.payload, ...state.tasks]
-      };
-
+        tasks: state.tasks.map((task) =>
+          task.id === action.payload.id ? { ...task, ...action.payload } : task
+        ),
+      }
+      
     case UPDATE_TASK_FAILURE:
       return {
         ...state,
@@ -94,13 +100,13 @@ const tasksReducer = (state = initialState, action) => {
       };
 
 
-    case 'UPDATE_SELECTED_TASK':
-      return {
-        ...state,
-        tasks: state.tasks.map(task =>
-          task.id === action.payload.taskId ? { ...task, ...action.payload.updatedFields } : task
-        ),
-      };
+    // case 'UPDATE_SELECTED_TASK':
+    //   return {
+    //     ...state,
+    //     tasks: state.tasks.map(task =>
+    //       task.id === action.payload.taskId ? { ...task, ...action.payload.updatedFields } : task
+    //     ),
+    //   };
     case DELETE_TASK:
       return {
         ...state,
@@ -109,25 +115,49 @@ const tasksReducer = (state = initialState, action) => {
 
 
       case ADD_COMMENT_SUCCESS:
+        console.log("ADD_COMMENT_SUCCESS===>",action.payload.co,...state.comments);
+        
         return {
           ...state,
-          tasks: state.tasks.map(task =>
-            task.id === action.payload.taskId
-              ? {
-                  ...task,
-                  comments: [...task.comments, { 
-                    comment: action.payload.comment, 
-                    image: action.payload.image 
-                  }],
-                }
-              : task
-          ),
+         comments: [...state.comments, ...action.payload.comments]
         };
       case ADD_COMMENT_FAILURE:
         return {
           ...state,
           error: action.payload,
         };
+        //  fetch all comments 
+
+        
+          case FETCH_COMMENTS_REQUEST:
+            return {
+              ...state,
+            };
+          case FETCH_COMMENTS_SUCCESS:
+            return {
+            
+              ...state,
+              comments: action.payload.comments,
+            };
+          case FETCH_COMMENTS_FAILURE:
+            return {
+              ...state,
+              error: action.payload,
+            };
+            
+            case DELETE_COMMENT_SUCCESS:
+              console.log("comments=======>", state.comments);
+              
+              return {
+                ...state,
+                comments: state.comments.filter(comment => comment.id !== action.payload), 
+              };
+        
+            case DELETE_COMMENT_FAILURE:
+              return {
+                ...state,
+                error: action.payload,
+              };
     default:
       return state;
   }

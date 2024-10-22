@@ -158,10 +158,15 @@ export const updateTask = (id, updatedTaskData,assigned_user_id) => ({
   payload: { id, updatedTaskData ,assigned_user_id},
 });
 
-export const updateTaskSuccess = (updatedTask) => ({
-  type: UPDATE_TASK_SUCCESS,
-  payload: updatedTask,
-});
+export const updateTaskSuccess = (updatedTask) => {
+  console.log("updateTaskSuccess====>",updatedTask);
+  
+
+  return{
+    type: UPDATE_TASK_SUCCESS,
+    payload: updatedTask,
+  }
+};
 
 export const updateTaskFailure = (error) => ({
   type: UPDATE_TASK_FAILURE,
@@ -194,16 +199,95 @@ export const addCommentRequest = (taskId, comment) => {
 };
 
 // Success action when the comment is successfully added
-export const addCommentSuccess = (taskId, comment) => ({
-  type: ADD_COMMENT_SUCCESS,
-  payload: { taskId, comment},
-});
+export const addCommentSuccess = ( comment) => {
+  // console.log("comments1111222==>",taskId , comment)
+  return {
+    type: ADD_COMMENT_SUCCESS,
+    payload: comment,
+  }
+};
 
 // Failure action if adding a comment fails
 export const addCommentFailure = error => ({
   type: ADD_COMMENT_FAILURE,
   payload: error,
 });
+// actionTypes.js
+export const FETCH_COMMENTS_REQUEST = 'FETCH_COMMENTS_REQUEST';
+export const FETCH_COMMENTS_SUCCESS = 'FETCH_COMMENTS_SUCCESS';
+export const FETCH_COMMENTS_FAILURE = 'FETCH_COMMENTS_FAILURE';
+
+// actions.js
+export const fetchCommentsRequest = (taskId) => {
+  // console.log("taskId==>",);
+  
+  return {
+  type: FETCH_COMMENTS_REQUEST,
+  payload: { taskId},
+}};
+
+export const fetchCommentsSuccess = (comments) => {
+  console.log("comments==>",comments);
+  
+  return {
+    type: FETCH_COMMENTS_SUCCESS,
+  payload: comments,
+  }
+};
+
+export const fetchCommentsFailure = (error) => ({
+  type: FETCH_COMMENTS_FAILURE,
+  payload: error,
+});
+// Action Types
+export const DELETE_COMMENT_REQUEST = 'DELETE_COMMENT_REQUEST';
+export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS';
+export const DELETE_COMMENT_FAILURE = 'DELETE_COMMENT_FAILURE';
+
+// Action Creators
+export const deleteCommentRequest = (taskId) => {
+  console.log("id===>",taskId);
+  
+  return{
+  type: DELETE_COMMENT_REQUEST,
+  payload: taskId,
+}};
+
+export const deleteCommentSuccess = (taskId) =>{
+  return{
+    type:DELETE_COMMENT_SUCCESS,
+    payload: taskId,
+  }
+};
+
+export const deleteCommentFailure = (error) => ({
+  type:DELETE_COMMENT_FAILURE ,
+  payload: error,
+});
+export const EDIT_COMMENT_REQUEST = 'EDIT_COMMENT_REQUEST';
+export const EDIT_COMMENT_SUCCESS = 'EDIT_COMMENT_SUCCESS';
+export const EDIT_COMMENT_FAILURE = 'EDIT_COMMENT_FAILURE';
+
+// Action Creators
+export const editCommentRequest = (comment) => {
+console.log("editCommentRequest==>",comment);
+
+  return{
+    type: EDIT_COMMENT_REQUEST,
+    payload:comment,  // contains the comment object
+  }
+};
+
+export const editCommentSuccess = (updatedComment) => ({
+  type: EDIT_COMMENT_SUCCESS,
+  payload: updatedComment,
+});
+
+export const editCommentFailure = (error) => ({
+  type: EDIT_COMMENT_FAILURE,
+  payload: error,
+});
+
 
 
 

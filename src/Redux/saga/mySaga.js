@@ -31,7 +31,7 @@ import { message } from "antd";
 function* fetchData(action) {
   try {
     const user = action.payload; // Assuming the user object is passed in action.payload
-    const response = yield call(axios.post, "http://localhost:3000/api/v1/users", {
+    const response = yield call(axios.post, "https://mysite-q830.onrender.com/api/v1/users", {
       user: {
         name: user.name,
         email: user.email,
@@ -64,7 +64,7 @@ function* fetchLoginData(action) {
 
 
   try {
-    const response = yield call(axios.post, "http://localhost:3000/api/v1/login", {
+    const response = yield call(axios.post, "https://mysite-q830.onrender.com/api/v1/login", {
       email,
       password,
     });
