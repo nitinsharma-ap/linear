@@ -137,7 +137,7 @@ function* allUsers(){
     
       const token = localStorage.getItem('access_token');
       
-      const response = yield call(axios.get, `http://localhost:3000/api/v1/task/${taskId}/comments`, {
+      const response = yield call(axios.get, `https://mysite-q830.onrender.com/api/v1/task/${taskId}/comments`, {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -170,7 +170,7 @@ function* allUsers(){
    console.log("payload===>",payload);
    
      
-        const response = yield call(axios.post, `http://localhost:3000/api/v1/tasks/${taskId}/comments`,payload,{
+        const response = yield call(axios.post, `https://mysite-q830.onrender.com/api/v1/tasks/${taskId}/comments`,payload,{
             headers: {
                 'Content-Type': 'application/json', // Set content type to JSON
                 'Authorization': `Bearer ${token}`, // Include token for authorization
@@ -197,7 +197,7 @@ function* deleteCommmentsSaga(action) {
     console.log("Delete===>",action.payload,commentId);
 
     // API call to delete the task
-    const response = yield call(axios.delete, `http://localhost:3000/api/v1/comments/${commentId}`, {
+    const response = yield call(axios.delete, `https://mysite-q830.onrender.com/api/v1/comments/${commentId}`, {
       headers: {
          'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
@@ -234,7 +234,7 @@ function* editCommmentsSaga(action) {
 
 
     // API call to delete the task
-    const response = yield call(axios.put, `http://localhost:3000/api/v1/comments/${commentId}`,payload, {
+    const response = yield call(axios.put, `https://mysite-q830.onrender.com/api/v1/comments/${commentId}`,payload, {
       headers: {
          'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
