@@ -63,7 +63,7 @@ function LeftSideBar({
     if (e.key === "users") {
       console.log("E.k",e.key);
 
-      dispatch( fetchUsersRequest()); 
+      // dispatch( fetchUsersRequest()); 
     }
     if (onFilterChange) {
       onFilterChange(e.key);

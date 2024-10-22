@@ -29,11 +29,17 @@ function Dashboard() {
   const [isHeaderVisible, setIsHeaderVisible] = useState(true);
   const [selectedTask, setSelectedTask] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const users = useSelector((state) => state.tasksReducer.users);
-  console.log("nitinUsers===>",users);
   
-  const tasks = useSelector((state) => state.tasksReducer.tasks);
+  const [localTasks, setLocalTasks] = useState([]);
+
+
+  const usersVal = useSelector((state) => state.tasksReducer.users) || [];
+  const users =  usersVal.users;
+  console.log("nitinUsers===>",users,usersVal);
+  
+  const tasks  = useSelector((state) => state.tasksReducer.tasks);
+  
+
   console.log("tasks====>",tasks);
 
   const navigate = useNavigate();
@@ -51,26 +57,19 @@ function Dashboard() {
     };
     fetchData();
   }, [dispatch]);
+
+  useEffect(() => {
+    setLocalTasks(tasks);  // Sync local tasks with Redux state
+  }, [tasks]);
   
-
-
-  // useEffect(() => {
-  //   if (filter === "users") {
-  //     setLoading(true); // Show loading spinner
-  //     dispatch(fetchUsersRequest()); // Dispatch fetch action
-  //   }
-  // }, [dispatch, filter]);
-
-  // useEffect(() => {
-  //   if (users.length > 0) {
-  //     setLoading(false); // Hide loading spinner once data is fetched
-  //   }
-  // }, [users]);
+  useEffect(()=>{
+    dispatch( fetchUsersRequest());
+  },[dispatch])
 
 
   const userVal1 = JSON.parse(localStorage.getItem('user'));
-  console.log("userVal====>",userVal1.user['name'],userVal1);
-  const userVal = userVal1.user['name'];
+  console.log("userVal====>",userVal1.name);
+  const userVal = userVal1.user?.name ?? userVal1.name;
 
   const handleLogout = async () => {
     await Promise.resolve();
@@ -82,19 +81,21 @@ function Dashboard() {
     setEditingTask(null);
     setIsModalOpen(true);
     setIsMenuVisible(false);
-    dispatch( fetchUsersRequest());
+    // dispatch( fetchUsersRequest());
     
   };
-
   const handleOk = (newTask) => {
-    // if (editingTask) {
-    //   dispatch(editTask({ ...newTask, key: editingTask.key }));
-    // } else {
-    //   dispatch(addTask({ ...newTask, key: tasks.length }));
-    // }
+    const updatedTasks = [...localTasks, { ...newTask, key: tasks.length }];
+    
+    // Update the local tasks array
+    setLocalTasks(updatedTasks);
+  
+    // Dispatch Redux action to save it globally
     dispatch(addTask({ ...newTask, key: tasks.length }));
+  
     setIsModalOpen(false);
   };
+  
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -218,7 +219,7 @@ function Dashboard() {
             editingTask={editingTask}
           />
           <RightSide
-            tasks={tasks}
+            tasks={localTasks ? localTasks : tasks}
             filter={filter}
             searchQuery={searchQuery}
             viewMode={viewMode}

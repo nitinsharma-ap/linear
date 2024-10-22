@@ -15,17 +15,20 @@ import { SlCalender } from "react-icons/sl";
 import { FaUserCircle } from "react-icons/fa";
 import Support from "./Support";
 import UserTable from "./User";
+import { useDispatch } from "react-redux";
+import { fetchCommentsRequest } from "../Redux/Action/action";
 
 const RightSide = ({tasks,filter,searchQuery,viewMode, users,hideHeader,showHeader,
 selectedTask,setSelectedTask,
 }) => {
-  console.log("vivek===>", filter,tasks);
+  console.log("vivek===>",users ,tasks);
   const [currentPage, setCurrentPage] = useState(1);
+ const dispatch = useDispatch();
 
   const itemsPerPage = viewMode === "grid" ? 3 : 15;
   console.log("task", tasks);
 
-  const filteredTasks = tasks.filter((task) => {
+  const filteredTasks = tasks && tasks.filter((task) => {
     const query = searchQuery ?.toLowerCase();
     console.log("v1", query);
     const matchesSearchQuery =
@@ -48,10 +51,13 @@ selectedTask,setSelectedTask,
     if (filter === "completed")
       return task.status === "Done" && matchesSearchQuery;
     return matchesSearchQuery;
-  });
+  }) || [];
 
   const handleTaskCardClick = (task) => {
+    // console.log("fetchCommentsRequest==>",task);
+    
     setSelectedTask(task);
+    dispatch(fetchCommentsRequest(task.id))
     hideHeader();
   };
 
@@ -60,9 +66,6 @@ selectedTask,setSelectedTask,
     showHeader();
   };
   console.log("--n", filter);
-
-
-
   const renderTasksByStatus = (status) => {
     const tasksByStatus = filteredTasks.filter(
       (task) => task.status ?.toLowerCase() === status.toLowerCase()
@@ -76,8 +79,14 @@ selectedTask,setSelectedTask,
 
 
     return paginatedTasks.map((task, index) => {
-
-      const user = users && users.find((user) => user.name === task.assignedUser);
+      console.log("task====>",task.assigned_user_id);
+      
+      
+      const user = users && users.find((user) => 
+        
+        user.id === task.assigned_user_id);
+        // console.log("user====>",user);
+      
       return (
 
         <div
@@ -139,7 +148,9 @@ selectedTask,setSelectedTask,
         dataSource={paginatedTasks}
         renderItem={(item, index) => {
 
-      const user = users && users.find((user) => user.name === item.assignedUser);
+      const user = users && users.find((user) => user.id === item.assigned_user_id);
+      console.log("user===>",user);
+      
           return (
             <List.Item onClick={() => handleTaskCardClick(item)}>
               <List.Item.Meta
@@ -274,7 +285,9 @@ const countTasksByStatus = (status) => {
             <div className="task-details">
               <Task
                 task={selectedTask}
+                users={users}
                 handleBackToList={handleBackToList}
+
               />
             </div>
           )}

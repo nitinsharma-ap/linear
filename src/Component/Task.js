@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiSolidUserCircle } from "react-icons/bi";
 import {
   Button,
@@ -13,7 +13,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { SiGoogletasks } from "react-icons/si";
 import "./Task.css";
 import { useDispatch, useSelector } from "react-redux";
-import { updateSelectedTask, updateTask } from "../Redux/Action/action";
+import { addCommentRequest, deleteCommentRequest, editCommentRequest, fetchUsersRequest, updateSelectedTask, updateTask } from "../Redux/Action/action";
 
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDeleteSweep } from "react-icons/md";
@@ -30,13 +30,22 @@ const { TextArea } = Input;
 
 const { Option } = Select;
 
-const Task = ({ task, handleBackToList }) => {
+const Task = ({ task, handleBackToList ,users}) => {
   const dispatch = useDispatch();
-  const users = useSelector((state) => state.subReducer.tasks);
-  const [comments, setComments] = useState(task?.comments || []);
-
+  const [comments, setComments] = useState(task?.comments || [])
+  // useEffect(()=>{
+  //   dispatch( fetchUsersRequest());
+  // },[dispatch])
+                       
+// const users = useSelector((state) => state.tasksReducer.users);
+  console.log("nitinUsers111===>",users,task);
+  
   const data1 = useSelector((state) => state.tasksReducer.tasks);
-  console.log("d",users, data1);
+    
+  const extractedComments = useSelector((state) => state.tasksReducer.comments) || [];
+  console.log("extractedComments===>",extractedComments);
+  
+  console.log("d =====>",{users, data1});
   const [comment, setComment] = useState("");
   const [fileList, setFileList] = useState([]);
   const [editingCommentIndex, setEditingCommentIndex] = useState(null);
@@ -52,6 +61,8 @@ const Task = ({ task, handleBackToList }) => {
     assignedUser: false,
   });
   const userVal = JSON.parse(localStorage.getItem('user'));
+  console.log("userVal===>",userVal,userVal.name);
+  
 
   const [initialValues] = useState({
     task_title: task?.task_title || "",
@@ -60,8 +71,12 @@ const Task = ({ task, handleBackToList }) => {
     due_date: task?.due_date || null,
     priority: task?.priority || "",
     status: task?.status || "",
-    assignedUser: task?.assignedUser || "",
+    assignedUser:
+    (users && users.find((user) => user.id === task?.assigned_user_id)?.name) ||
+    "",
   });
+  console.log("intinalValue====>",initialValues,);
+  
 
   const [editedValues, setEditedValues] = useState({ ...initialValues });
   const uniquePriorities = [...new Set(data1.map((option) => option.priority))];
@@ -81,8 +96,18 @@ const Task = ({ task, handleBackToList }) => {
   };
 
   const handleSelectChange = (value, field) => {
+    // dispatch(fetchUsersRequest()); 
     setEditedValues({ ...editedValues, [field]: value });
   };
+
+  // const handleSelectChange = (value) => {
+  // console.log("value =>>> 11", value);
+
+  //   setEditedValues((prevValues) => ({
+  //     ...prevValues,
+  //     assignedUser : value, // Store the selected user ID in state
+  //   }));
+  // };
 
   const handleEnterPress = (e, field) => {
     if (e.key === "Enter") {
@@ -101,13 +126,17 @@ const Task = ({ task, handleBackToList }) => {
     const newComment = {
       text: comment,
       images: fileList.map((file) => ({
+
         uid: file.uid,
         src: URL.createObjectURL(file.originFileObj),
         name: file.name,
         type: file.type,
         size: file.size,
+        
       })), 
-    };
+    }; 
+    console.log("fileList===>",newComment);
+    
 
     // Update comments state
     const updatedComments = [...comments, newComment];
@@ -115,12 +144,15 @@ const Task = ({ task, handleBackToList }) => {
 
     // Prepare updated fields
     const updatedFields = {
-      ...editedValues,
+      // ...editedValues,
       comments: updatedComments,
     };
+    console.log("123",updatedFields);
+    
 
     // Dispatch the action to update the task in Redux
-    dispatch(updateSelectedTask(task.id, updatedFields));
+    // dispatch(updateSelectedTask(task.id, updatedFields));
+    dispatch(addCommentRequest(task.id, updatedFields));
 
 
     // Clear the input fields
@@ -129,49 +161,91 @@ const Task = ({ task, handleBackToList }) => {
     message.success("Comment added successfully");
   };
 
-  const handleEditComment = (index) => {
+  const handleEditComment = (index,comments) => {
+    console.log("index445552====>",index,comments);
     setEditingCommentIndex(index);
-    setEditedCommentText(comments[index].text);
-    setEditedCommentImages(comments[index].images || []);
+    setEditedCommentText(comments.text);
+    setEditedCommentImages(comments.images || []);
   };
 
-  const handleSaveComment = (index) => {
-    const updatedComments = comments.map((comment, i) =>
-      i === index
-        ? {
-            ...comment,
-            text: editedCommentText,
-            images: editedCommentImages.map((file) => ({
-              ...file,
-              uid: file.uid,
-              src: file.src || URL.createObjectURL(file.originFileObj),
-              name: file.name,
-              type: file.type,
-              size: file.size,
-            })),
-          }
-        : comment
+  // const handleSaveComment = (index, comment) => {
+  //   console.log("id==>", comment.id, comment);
+  
+  //   // Map through the comments, and only update the comment at the provided index
+  //   const updatedComments = extractedComments.map((item, i) =>
+  //     i === index
+  //       ? {
+  //           ...item, // Spread the existing comment data
+  //           text: editedCommentText, // Update the text with the edited value
+  //           images: editedCommentImages.map((file) => ({
+  //             ...file,
+  //             uid: file.uid,
+  //             src: file.src || URL.createObjectURL(file.originFileObj), // Handle newly uploaded images
+  //             name: file.name,
+  //             type: file.type,
+  //             size: file.size,
+  //           })),
+  //         }
+  //       : item // Return the other comments unchanged
+  //   );
+  
+  //   console.log("updatedComments===>", updatedComments);
+  
+  //   // Update the state with the new comments array
+  //   setComments(updatedComments);
+  
+  //   // Dispatch the edit comment request with the updated comment
+  //   dispatch(
+  //     editCommentRequest(updatedComments[index]) // Pass the updated comment at the specified index
+  //   );
+  
+  //   // Reset editing state
+  //   setEditingCommentIndex(null);
+  //   setEditedCommentText("");
+  //   setEditedCommentImages([]);
+  // };
+  
+  const handleSaveComment = (index, comment) => {
+    console.log("id==>", comment.id, comment);
+  
+    // Update only the specific comment at the given index
+    const updatedComment = {
+      ...comment, // Spread the existing comment data
+      text: editedCommentText, // Update the text with the edited value
+      images: editedCommentImages.map((file) => ({
+        ...file,
+        uid: file.uid,
+        src: file.src || URL.createObjectURL(file.originFileObj), // Handle newly uploaded images
+        name: file.name,
+        type: file.type,
+        size: file.size,
+      })),
+    };
+  
+    console.log("updatedComment===>", updatedComment);
+  
+    // Update the state with the new comments array (optional, if you need it for UI)
+    const updatedComments = extractedComments.map((item, i) =>
+      i === index ? updatedComment : item
     );
     setComments(updatedComments);
-    dispatch(
-      updateSelectedTask(task.id, {
-        ...editedValues,
-        comments: updatedComments,
-      })
-    );
+  
+    // Dispatch only the updated comment, not the whole list
+    dispatch(editCommentRequest(updatedComment));
+  
+    // Reset editing state
     setEditingCommentIndex(null);
     setEditedCommentText("");
     setEditedCommentImages([]);
   };
-
-  const handleDeleteComment = (index) => {
+  
+  const handleDeleteComment = (index,id) => {
+    console.log("deleteComments===>",index,id);
+    
     const updatedComments = comments.filter((_, i) => i !== index);
     setComments(updatedComments);
     dispatch(
-      updateSelectedTask(task.id, {
-        ...editedValues,
-        comments: updatedComments,
-      })
+      deleteCommentRequest(id)
     );
   };
 
@@ -187,12 +261,12 @@ const Task = ({ task, handleBackToList }) => {
       return comment;
     });
     setComments(updatedComments);
-    dispatch(
-      updateSelectedTask(task.id, {
-        ...editedValues,
-        comments: updatedComments,
-      })
-    );
+    // dispatch(
+    //   updateSelectedTask(task.id, {
+    //     ...editedValues,
+    //     comments: updatedComments,
+    //   })
+    // );
   };
 
   const handleCancelEditComment = () => {
@@ -242,20 +316,21 @@ const Task = ({ task, handleBackToList }) => {
     if (comments !== task.comments) {
       updatedFields.comments = serializedComments;
     }
-      dispatch(updateTask(task.id,updatedFields))
+      dispatch(updateTask(task.id,updatedFields,task.assigned_user_id))
     // dispatch(updateSelectedTask(task.id, updatedFields));
 
-    message.success("  save data success");
+    // message.success("  save data success");
     handleBackToList();
   };
-
+  
   if (!task) {
     return <p>No task selected</p>;
   }
 
   const assignedUserName =
-    (users && users.find((user) => user.name === task.assignedUser)?.name) ||
+    (users && users.find((user) => user.id === task.assigned_user_id)?.name) ||
     "Unknown User";
+console.log("assignedUserName====>",assignedUserName);
 
   return (
     <div className="task">
@@ -345,7 +420,7 @@ const Task = ({ task, handleBackToList }) => {
                 {editMode.assignedUser ? (
                   <Select
                     showSearch
-                    value={editedValues.assignedUser}
+                    value={editedValues.assignedUser }
                     style={{ width: "auto" }}
                     onChange={(value) =>
                       handleSelectChange(value, "assignedUser")
@@ -353,8 +428,9 @@ const Task = ({ task, handleBackToList }) => {
                   >
                     {users &&
                       users.map((user) => (
-                        <Select.Option key={user.name} value={user.name}>
+                        <Select.Option key={user.id} value={user.name}>
                           {user.name}
+                          {console.log("user.name",user.name,user.id)}
                         </Select.Option>
                       ))}
                   </Select>
@@ -458,18 +534,19 @@ const Task = ({ task, handleBackToList }) => {
           <div className="comments">
             <h3> Activity :</h3>
             <br></br>
-            {comments.map((comment, index) => (
-              <div key={index} className="comment-box">
+            {/* {comments.map((comment, idx) => (
+              <div key={idx} className="comment-box">
                 <div className="Comment-icon">
               <div className="commets-icon-1">
               <img src="./ic.png"  className="comments-logo"/>
                 <span className="livePoint1"></span>
                 </div>
-                <p> {userVal.email.replace("@gmail.com","")}</p>
+                <p> {userVal.name}</p>
                 </div>
 
-
-                {editingCommentIndex === index ? (
+                {console.log('idx====>', {comment, idx, editingCommentIndex})}
+                
+                {editingCommentIndex === idx ? (
                   <>
                     <div className="input-section">
                       <div className="textarea-container">
@@ -491,7 +568,7 @@ const Task = ({ task, handleBackToList }) => {
                           </Upload>
                           <Button
                             type="primary"
-                            onClick={() => handleSaveComment(index)}
+                            onClick={() => handleSaveComment(idx)}
                           >
                             Save
                           </Button>
@@ -507,42 +584,130 @@ const Task = ({ task, handleBackToList }) => {
                     </div>
                   </>
                 ) : (
-                  <>
-                    <p>{comment.text}</p>
-                    <br></br>
-                    <div>
-
-                      {comment.images &&
-                        comment.images.map((image, idx) => (
-
-                          <div key={idx}>
-                            <span>
-                            <Image
-                              src={image.src}
-                              className=".comment-imag"
-                              alt={`comment-image-${idx}`}
-
-                            />
-                            </span>
-
-                            <MdDeleteForever
-                              className="d"
-                              onClick={() => handleDeleteImage(index, idx)}
-                            />
-
+                    <>
+                      {extractedComments.map((comment, index) => (
+                        
+                        <div key={index}>
+                          {console.log("comment======>",comment)
+                          }
+                          <p >{comment.text}</p>
+                          <br />
+                          <div>
+                            {comment.images && comment.images.length && comment.images.map((image, idx1) => (
+                              <div key={idx1}>
+                                <span>
+                                  <Image
+                                    src={image.src}
+                                    className="comment-imag" // Removed the dot before className
+                                    alt={`comment-image-${idx1}`}
+                                  />
+                                </span>
+                                <MdDeleteForever
+                                  className="d"
+                                  onClick={() => handleDeleteImage(index, idx1)}
+                                />
+                              </div>
+                            ))}
                           </div>
-                        ))}
-                    </div>
-                    <div className="edit-photo">
-                      <CiEdit onClick={() => handleEditComment(index)} />
-                      <MdOutlineDeleteSweep
-                        onClick={() => handleDeleteComment(index)}
-                      />
-                    </div>
+                          <div className="edit-photo">
+                            <CiEdit onClick={() => handleEditComment(index)} />
+                            <MdOutlineDeleteSweep
+                              onClick={() => handleDeleteComment(index)}
+                            />
+                          </div>
+                        </div>
+                      ))}
+
                   </>
                 )}
               </div>
-            ))}
+            ))} */}
+            {extractedComments.map((comment, idx) => (
+  <div key={idx} className="comment-box">
+    <div className="Comment-icon">
+      <div className="commets-icon-1">
+        <img src="./ic.png" className="comments-logo" />
+        <span className="livePoint1"></span>
+      </div>
+      <p>{userVal.name}</p>
+    </div>
+
+    {editingCommentIndex === idx ? (
+      <>
+        <div className="input-section">
+          <div className="textarea-container">
+            <TextArea
+              value={editedCommentText}
+              onChange={(e) => setEditedCommentText(e.target.value)}
+              rows={4}
+            />
+            <div className="button-group">
+              <Upload
+                fileList={editedCommentImages}
+                onChange={handleUploadCommentImagesChange}
+                beforeUpload={() => false}
+                multiple
+                className="task-upload"
+                showUploadList={{ showRemoveIcon: false }}
+              >
+                <Button icon={<UploadOutlined />}></Button>
+              </Upload>
+              <Button
+                type="primary"
+                onClick={() => handleSaveComment(idx,comment)}
+              >
+                Save
+              </Button>
+
+              <Button
+                className="task-cancel"
+                onClick={handleCancelEditComment}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      </>
+    ) : (
+      <>
+        <p>{comment.text}</p>
+        <br />
+        <div>
+        {comment.images && comment.images.length > 0 && comment.images.map((image, idx1) => {
+  // Check if the image is a Blob and create an object URL for it
+  const imageUrl = image.src instanceof Blob ? URL.createObjectURL(image.src) : image.src;
+  console.log("imageUrl===>",imageUrl,image, comment);
+  
+
+  return (
+    <div key={idx1}>
+      {console.log('Image====>', image.uid, imageUrl,idx1)}
+      <span>
+        <Image
+          src={imageUrl}  // Use the object URL or the existing src
+          className="comment-imag"
+          alt={`comment-image-${idx1}`}
+        />
+      </span>
+      <MdDeleteForever
+        className="d"
+        onClick={() => handleDeleteImage(idx, idx1)}
+      />
+    </div>
+  );
+})}
+        </div>
+        <div className="edit-photo">
+          <CiEdit onClick={() => handleEditComment(idx ,comment)} />
+          <MdOutlineDeleteSweep
+            onClick={() => handleDeleteComment(idx,comment)}
+          />
+        </div>
+      </>
+    )}
+  </div>
+))}
           </div>
 
           <div className="input-section">
@@ -623,15 +788,16 @@ const Task = ({ task, handleBackToList }) => {
             {/* Assigned User */}
             <Select
               showSearch
-              value={editedValues.assignedUser || undefined}
+              value={editedValues.assignedUser}
               className="asign-user"
               style={{ width: "120px" }}
               placeholder="Assignee"
               onChange={(value) => handleSelectChange(value, "assignedUser")}
             >
-              {users.map((user) => (
-                <Option key={user.name} value={user.name}>
+              {users  && users.map((user) => (
+                <Option key={user.id} value={user.name}>
                   {user.name}
+                  {console.log("usename===>",user.name,user.id)}
                 </Option>
               ))}
             </Select>

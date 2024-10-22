@@ -3,6 +3,7 @@
 
 import { FETCH, SHOW, UPDATE ,REGISTER_USER,LOGIN_USER} from "./constant";
 import  {UPDATE_SELECTED_TASK } from './constant'
+import { ADD_COMMENT_REQUEST, ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE } from './constant';
 // import { FETCH_TASKS_REQUEST, FETCH_TASKS_SUCCESS, FETCH_TASKS_FAILURE } from './constant';
 export const ADD_USER = 'ADD_USER'
 
@@ -120,10 +121,14 @@ export const addTask = (task) => {
   }
 
 };
-export const createTaskSuccess = (task) => ({
+export const createTaskSuccess = (task) => {
+
+  console.log("addTask==> 45",task)
+  return{
   type: CREATE_TASK_SUCCESS,
-  payload: task,
-});
+  payload: task,}
+}
+
 
 export const createTaskFailure = (error) => ({
   type: CREATE_TASK_FAILURE,
@@ -145,17 +150,23 @@ export const deleteTask = (taskId) => ({
 export const UPDATE_TASK = "UPDATE_TASK";
 export const  UPDATE_TASK_SUCCESS = "UPDATE_TASK_SUCCESS";
 export const UPDATE_TASK_FAILURE = "UPDATE_TASK_FAILURE";
+// export const UPDATE_SELECTED_TASK = "UPDATE_SELECTED_TASK";
 
 
-export const updateTask = (id, updatedTaskData) => ({
+export const updateTask = (id, updatedTaskData,assigned_user_id) => ({
   type: UPDATE_TASK,
-  payload: { id, updatedTaskData },
+  payload: { id, updatedTaskData ,assigned_user_id},
 });
 
-export const updateTaskSuccess = (updatedTask) => ({
-  type: UPDATE_TASK_SUCCESS,
-  payload: updatedTask,
-});
+export const updateTaskSuccess = (updatedTask) => {
+  console.log("updateTaskSuccess====>",updatedTask);
+  
+
+  return{
+    type: UPDATE_TASK_SUCCESS,
+    payload: updatedTask,
+  }
+};
 
 export const updateTaskFailure = (error) => ({
   type: UPDATE_TASK_FAILURE,
@@ -165,13 +176,120 @@ export const updateTaskFailure = (error) => ({
 
 
 
-export const updateSelectedTask = (taskId, updatedFields) => {
-  console.log("=====>",updatedFields)
+// export const updateSelectedTask = (taskId, updatedFields) => {
+//   console.log("=====>",updatedFields)
+//   return {
+//       type: UPDATE_SELECTED_TASK,
+//       payload: { taskId, updatedFields},
+//   };
+// };
+// actionTypes.js
+// actions.js
+
+// Action to trigger saga for adding a comment
+export const addCommentRequest = (taskId, comment) => {
+  console.log("addCommentRequest==>",taskId, comment);
+  
+
   return {
-      type: 'UPDATE_SELECTED_TASK',
-      payload: { taskId, updatedFields},
-  };
+    type: ADD_COMMENT_REQUEST,
+    payload: { taskId, comment},
+
+  }
 };
+
+// Success action when the comment is successfully added
+export const addCommentSuccess = ( comment) => {
+  // console.log("comments1111222==>",taskId , comment)
+  return {
+    type: ADD_COMMENT_SUCCESS,
+    payload: comment,
+  }
+};
+
+// Failure action if adding a comment fails
+export const addCommentFailure = error => ({
+  type: ADD_COMMENT_FAILURE,
+  payload: error,
+});
+// actionTypes.js
+export const FETCH_COMMENTS_REQUEST = 'FETCH_COMMENTS_REQUEST';
+export const FETCH_COMMENTS_SUCCESS = 'FETCH_COMMENTS_SUCCESS';
+export const FETCH_COMMENTS_FAILURE = 'FETCH_COMMENTS_FAILURE';
+
+// actions.js
+export const fetchCommentsRequest = (taskId) => {
+  // console.log("taskId==>",);
+  
+  return {
+  type: FETCH_COMMENTS_REQUEST,
+  payload: { taskId},
+}};
+
+export const fetchCommentsSuccess = (comments) => {
+  console.log("comments==>",comments);
+  
+  return {
+    type: FETCH_COMMENTS_SUCCESS,
+  payload: comments,
+  }
+};
+
+export const fetchCommentsFailure = (error) => ({
+  type: FETCH_COMMENTS_FAILURE,
+  payload: error,
+});
+// Action Types
+export const DELETE_COMMENT_REQUEST = 'DELETE_COMMENT_REQUEST';
+export const DELETE_COMMENT_SUCCESS = 'DELETE_COMMENT_SUCCESS';
+export const DELETE_COMMENT_FAILURE = 'DELETE_COMMENT_FAILURE';
+
+// Action Creators
+export const deleteCommentRequest = (taskId) => {
+  console.log("id===>",taskId);
+  
+  return{
+  type: DELETE_COMMENT_REQUEST,
+  payload: taskId,
+}};
+
+export const deleteCommentSuccess = (taskId) =>{
+  return{
+    type:DELETE_COMMENT_SUCCESS,
+    payload: taskId,
+  }
+};
+
+export const deleteCommentFailure = (error) => ({
+  type:DELETE_COMMENT_FAILURE ,
+  payload: error,
+});
+export const EDIT_COMMENT_REQUEST = 'EDIT_COMMENT_REQUEST';
+export const EDIT_COMMENT_SUCCESS = 'EDIT_COMMENT_SUCCESS';
+export const EDIT_COMMENT_FAILURE = 'EDIT_COMMENT_FAILURE';
+
+// Action Creators
+export const editCommentRequest = (comment) => {
+console.log("editCommentRequest==>",comment);
+
+  return{
+    type: EDIT_COMMENT_REQUEST,
+    payload:comment,  // contains the comment object
+  }
+};
+
+export const editCommentSuccess = (updatedComment) => ({
+  type: EDIT_COMMENT_SUCCESS,
+  payload: updatedComment,
+});
+
+export const editCommentFailure = (error) => ({
+  type: EDIT_COMMENT_FAILURE,
+  payload: error,
+});
+
+
+
 
 
 

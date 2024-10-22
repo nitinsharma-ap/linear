@@ -31,7 +31,7 @@ import { message } from "antd";
 function* fetchData(action) {
   try {
     const user = action.payload; // Assuming the user object is passed in action.payload
-    const response = yield call(axios.post, "http://localhost:3000/users", {
+    const response = yield call(axios.post, "https://mysite-q830.onrender.com/api/v1/users", {
       user: {
         name: user.name,
         email: user.email,
@@ -64,18 +64,18 @@ function* fetchLoginData(action) {
 
 
   try {
-    const response = yield call(axios.post, "http://localhost:3000/login", {
+    const response = yield call(axios.post, "https://mysite-q830.onrender.com/api/v1/login", {
       email,
       password,
     });
     console.log("nitinS",response);
 
-    const { token, user } = response.data;
-    console.log("nitinToken",user);
+    const {access_token, user } = response.data;
+    console.log("nitinToken",user,access_token);
     
 
     // Save token and user data to localStorage
-    localStorage.setItem("token", token);
+    localStorage.setItem("access_token", access_token);
     localStorage.setItem("user", JSON.stringify(user)); 
 
     
