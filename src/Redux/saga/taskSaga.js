@@ -4,7 +4,7 @@ import axios from 'axios';
 import {ADD_COMMENT_REQUEST, FETCH_TASKS_REQUEST, SHOW} from "../Action/constant"
 import { message } from 'antd';
 
-import {fetchTasksSuccess,fetchTasksFailure, ADD_TASK, createTaskSuccess, createTaskFailure, FETCH_USERS_REQUEST, fetchUsersSuccess, fetchUsersFailure, updateSelectedTask, updateTaskSuccess, addCommentSuccess, addCommentFailure, fetchCommentsRequest, FETCH_COMMENTS_REQUEST, fetchCommentsSuccess, DELETE_TASK_REQUEST, DELETE_COMMENT_REQUEST, deleteCommentSuccess, deleteCommentFailure, EDIT_COMMENT_REQUEST} from '../Action/action';
+import {fetchTasksSuccess,fetchTasksFailure, ADD_TASK, createTaskSuccess, createTaskFailure, FETCH_USERS_REQUEST, fetchUsersSuccess, fetchUsersFailure, updateSelectedTask, updateTaskSuccess, addCommentSuccess, addCommentFailure, fetchCommentsRequest, FETCH_COMMENTS_REQUEST, fetchCommentsSuccess, DELETE_TASK_REQUEST, DELETE_COMMENT_REQUEST, deleteCommentSuccess, deleteCommentFailure, EDIT_COMMENT_REQUEST, editCommentSuccess} from '../Action/action';
 
 import {UPDATE_TASK,UPDATE_TASK_FAILURE } from "../Action/action"
 
@@ -27,7 +27,7 @@ function* createTasksSaga(action) {
     };
     
     // API call to create task
-    const response = yield call(axios.post, 'https://mysite-q830.onrender.com/api/v1/tasks', payloadWithUserAndProject, {
+    const response = yield call(axios.post, 'http://localhost:3000/api/v1/tasks', payloadWithUserAndProject, {
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
@@ -53,7 +53,7 @@ function*showAllTask(){
   console.log("nitinNisha");
     try {
       const token = localStorage.getItem('access_token');
-      const response = yield call(axios.get,"https://mysite-q830.onrender.com/api/v1/tasks",
+      const response = yield call(axios.get,"http://localhost:3000/api/v1/tasks",
         {headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, 
@@ -71,7 +71,7 @@ function* allUsers(){
     try {
       const token = localStorage.getItem('access_token');
       console.log('token=======>',token);
-      const response = yield call(axios.get,"https://mysite-q830.onrender.com/api/v1/users",
+      const response = yield call(axios.get,"http://localhost:3000/api/v1/users",
         {headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`, 
@@ -86,14 +86,12 @@ function* allUsers(){
 
   }
   function* updateTask(action) {
-    // console.log("update====>",action);
-    
-    
-    
+  
     try {
       const token = localStorage.getItem('access_token');
-      const { id, updatedTaskData ,assigned_user_id} = action.payload;
-      console.log("updatedTaskData==>",action.payload,updatedTaskData);
+      const { id, updatedTaskData} = action.payload;
+      const assigned_user_id  = updatedTaskData.assignedUser;
+      console.log("updatedTaskData==>",action.payload,updatedTaskData,assigned_user_id);
       
       const project_id = 1;
       const payloadWithUpdateProject = {
@@ -103,7 +101,7 @@ function* allUsers(){
       };
   
       // API request to update the task
-      const response = yield call(axios.put, `https://mysite-q830.onrender.com/api/v1/tasks/${id}`, payloadWithUpdateProject , {
+      const response = yield call(axios.put, `http://localhost:3000/api/v1/tasks/${id}`, payloadWithUpdateProject , {
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
@@ -193,7 +191,7 @@ function* deleteCommmentsSaga(action) {
   
   try {
     const token = localStorage.getItem('access_token'); // Get auth token if needed
-    const commentId = action.payload;
+    const commentId = action.payload.id;
     console.log("Delete===>",action.payload,commentId);
 
     // API call to delete the task
@@ -241,17 +239,17 @@ function* editCommmentsSaga(action) {
       },
     }); 
 
-    console.log("response111===>",response)
+    console.log("response111===>",response.data)
 
     // Dispatch success action if API call is successful
-    // yield put(deleteCommentSuccess(commentId ));
+    yield put(editCommentSuccess(response.data));
     message.success('Task deleted successfully'); // Show success message
 
   } catch (error) {
    
     console.log("error=====>",error);
     
-    message.error('Failed to delete task');
+    message.error('Failed to edit comments');
   }
 }
   
