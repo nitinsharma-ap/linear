@@ -61,7 +61,7 @@ const Task = ({ task, handleBackToList ,users}) => {
     assignedUser: false,
   });
   const userVal = JSON.parse(localStorage.getItem('user'));
-  console.log("userVal===>",userVal,userVal.name);
+  console.log("userVal===>",users,task.assigned_user_id,task);
   
 
   const [initialValues] = useState({
@@ -71,9 +71,7 @@ const Task = ({ task, handleBackToList ,users}) => {
     due_date: task?.due_date || null,
     priority: task?.priority || "",
     status: task?.status || "",
-    assignedUser:
-    (users && users.find((user) => user.id === task?.assigned_user_id)?.name) ||
-    "",
+    assignedUser: task.assigned_user_id || "",
   });
   console.log("intinalValue====>",initialValues,);
   
@@ -96,8 +94,10 @@ const Task = ({ task, handleBackToList ,users}) => {
   };
 
   const handleSelectChange = (value, field) => {
+    console.log("value==>",value,field);
+  
     // dispatch(fetchUsersRequest()); 
-    setEditedValues({ ...editedValues, [field]: value });
+    setEditedValues({ ...editedValues, [field]: value,  });
   };
 
   // const handleSelectChange = (value) => {
@@ -316,7 +316,9 @@ const Task = ({ task, handleBackToList ,users}) => {
     if (comments !== task.comments) {
       updatedFields.comments = serializedComments;
     }
-      dispatch(updateTask(task.id,updatedFields,task.assigned_user_id))
+    console.log("task.assigned_user_id",task);
+    
+      dispatch(updateTask(task.id,updatedFields))
     // dispatch(updateSelectedTask(task.id, updatedFields));
 
     // message.success("  save data success");
@@ -428,7 +430,7 @@ console.log("assignedUserName====>",assignedUserName);
                   >
                     {users &&
                       users.map((user) => (
-                        <Select.Option key={user.id} value={user.name}>
+                        <Select.Option key={user.id} value={user.id}>
                           {user.name}
                           {console.log("user.name",user.name,user.id)}
                         </Select.Option>
@@ -795,9 +797,9 @@ console.log("assignedUserName====>",assignedUserName);
               onChange={(value) => handleSelectChange(value, "assignedUser")}
             >
               {users  && users.map((user) => (
-                <Option key={user.id} value={user.name}>
+                <Option key={user.id} value={user.id}>
                   {user.name}
-                  {console.log("usename===>",user.name,user.id)}
+                  {/* {console.log("usename===>",user.name,user.id)} */}
                 </Option>
               ))}
             </Select>

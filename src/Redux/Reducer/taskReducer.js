@@ -16,6 +16,11 @@ import {
   FETCH_COMMENTS_FAILURE,
   DELETE_COMMENT_SUCCESS,
   DELETE_COMMENT_FAILURE,
+  EDIT_COMMENT_REQUEST,
+  EDIT_COMMENT_SUCCESS,
+  EDIT_COMMENT_FAILURE,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILURE,
 
 } from '../Action/action';
 import { UPDATE_SELECTED_TASK } from '../Action/constant';
@@ -23,6 +28,7 @@ import { ADD_COMMENT_SUCCESS, ADD_COMMENT_FAILURE } from '../Action/constant';
 const initialState = {
   tasks: [],
   error: null,
+  isAuthenticated: true,
   users: [],
   comments: [],
 };
@@ -158,6 +164,43 @@ const tasksReducer = (state = initialState, action) => {
                 ...state,
                 error: action.payload,
               };
+
+              case EDIT_COMMENT_REQUEST:
+                return {
+                  ...state,
+                  // loading: true, // Set loading to true during the request
+                };
+          
+              case EDIT_COMMENT_SUCCESS:
+                // Update the specific comment based on the ID or some identifier
+                console.log("EDIT_COMMENT_SUCCESS222===>",action.payload,state);
+                return {
+                  ...state,
+                  comments: state.comments.map((comment) =>
+                    comment.id === action.payload.comment.id
+                      ? { ...comment, ...action.payload.comment } // Update the specific comment by ID
+                      : comment
+                  ),
+                };
+          
+              case EDIT_COMMENT_FAILURE:
+                return {
+                  ...state,
+                  // loading: false, // Stop loading
+                  error: action.payload, // Set the error received from the failure action
+                };
+
+    case LOGOUT_SUCCESS:
+      return {
+        ...state,
+        isAuthenticated: false, // Mark user as logged out
+      };
+    case LOGOUT_FAILURE:
+      return {
+        ...state,
+        error: action.payload, // Store the error in the state
+      };
+          
     default:
       return state;
   }

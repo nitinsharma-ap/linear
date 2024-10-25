@@ -153,10 +153,14 @@ export const UPDATE_TASK_FAILURE = "UPDATE_TASK_FAILURE";
 // export const UPDATE_SELECTED_TASK = "UPDATE_SELECTED_TASK";
 
 
-export const updateTask = (id, updatedTaskData,assigned_user_id) => ({
-  type: UPDATE_TASK,
-  payload: { id, updatedTaskData ,assigned_user_id},
-});
+export const updateTask = (id, updatedTaskData) => {
+  console.log("updateTask===>",id, updatedTaskData);
+  
+  return{
+    type: UPDATE_TASK,
+    payload: { id, updatedTaskData},
+  }
+};
 
 export const updateTaskSuccess = (updatedTask) => {
   console.log("updateTaskSuccess====>",updatedTask);
@@ -278,16 +282,39 @@ console.log("editCommentRequest==>",comment);
   }
 };
 
-export const editCommentSuccess = (updatedComment) => ({
-  type: EDIT_COMMENT_SUCCESS,
-  payload: updatedComment,
-});
+export const editCommentSuccess = (updatedComment) => {
+  console.log("editCommentSuccess==>",updatedComment);
+  
+  return{
+    type: EDIT_COMMENT_SUCCESS,
+    payload: updatedComment,
+  }
+};
 
 export const editCommentFailure = (error) => ({
   type: EDIT_COMMENT_FAILURE,
   payload: error,
 });
 
+
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST';
+export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
+export const LOGOUT_FAILURE = 'LOGOUT_FAILURE';
+
+
+export const logoutRequest = (callback) => ({
+  type: LOGOUT_REQUEST,
+  callback,
+});
+
+export const logoutSuccess = () => ({
+  type: LOGOUT_SUCCESS,
+});
+
+export const logoutFailure = (error) => ({
+  type: LOGOUT_FAILURE,
+  payload: error,
+});
 
 
 

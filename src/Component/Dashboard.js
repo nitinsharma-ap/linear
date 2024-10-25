@@ -10,11 +10,12 @@ import RightSide from './RightSide';
 import NewTask from './newTask';
 import logo from '../image/logo.png';
 import { Header } from 'antd/es/layout/layout';
-import { fetchUsersRequest, showData } from "../Redux/Action/action";
+import { fetchUsersRequest, logoutRequest, showData } from "../Redux/Action/action";
 import { fetchTasksRequest, addTask, editTask } from '../Redux/Action/action';
 import { IoGridOutline } from "react-icons/io5";
 import { CiCircleList } from "react-icons/ci";
 import { RiLogoutCircleLine } from "react-icons/ri";
+import axios from 'axios';
 
 const { Search } = Input;
 
@@ -72,9 +73,13 @@ function Dashboard() {
   const userVal = userVal1.user?.name ?? userVal1.name;
 
   const handleLogout = async () => {
-    await Promise.resolve();
-    localStorage.removeItem('token');
-    navigate('/');
+    // await Promise.resolve();
+    dispatch(logoutRequest(() => {
+      // Navigate after success
+      navigate('/');
+    }))
+    // localStorage.removeItem('token');
+    // navigate('/');
   };
 
   const handleClick = () => {
@@ -88,7 +93,7 @@ function Dashboard() {
     const updatedTasks = [...localTasks, { ...newTask, key: tasks.length }];
     
     // Update the local tasks array
-    setLocalTasks(updatedTasks);
+    // setLocalTasks(updatedTasks);
   
     // Dispatch Redux action to save it globally
     dispatch(addTask({ ...newTask, key: tasks.length }));
